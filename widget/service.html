@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="buildfire" content="disableTheme,disableFastClick">
+
+	<!--
+		NOTE:
+		1. You can reference the file in SDK via relative path
+		2. The Control and Widget Should NOT share resources. Only the Widget folder will make it to the device
+		3. You may include any JS framework you want with your Widget and Control folders. However, keep in mind
+		    to keep you plugin as light weight as possible for performance and transport reasons
+	-->
+
+	<!-- You can load helper.css to use our helper classes.
+	<link href="../../../../styles/helper.css" rel="stylesheet">
+	-->
+
+	<!-- JS -->
+	<script src="../../../scripts/buildfire.min.js"></script>
+    <script src="../../../scripts/buildfire/services/notifications/localNotifications.js"></script>
+	<!--
+   <script src="../../../../scripts/angular/angular.min.js"></script>
+   <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+   -->
+
+    <script>
+
+
+        function cancelAllPreviousDrips() {
+            var sIds = localStorage.getItem("dripIds");
+            if (sIds) {
+                var ids;
+
+                ids = sIds.split(",");
+                localStorage.setItem("dripIds", ids);
+                for (var i = 0; i < ids.length; i++) {
+                    buildfire.notifications.localNotification.cancel(ids[i], function (e) {
+                        if (e) console.error(e);
+                    });
+                }
+            }
+        }
+        cancelAllPreviousDrips();
+
+
+        function scheduleDrips(drips){
+
+            if(!drips || !drips.length) return;
+
+            var ids=[];
+            var now = new Date();
+
+            for(var i = 0 ; i < drips.length ; i++) {
+                var options = {
+                    title: 'Drip << Make this configurable'
+                    ,text: drips[i].text
+                    //,data: actionItem
+                    ,at: now.setDate( now.getSeconds() + 10 )
+                    //,returnToPluginInstanceId: '' //optional
+                };
+                buildfire.notifications.localNotification.schedule(options, function (err, data) {
+                    ids.push(data.id);
+                });
+
+            }
+
+            ///cheap hack
+            setTimeout(function(){
+                localStorage.setItem("dripIds",ids);
+            },3000);
+
+        }
+
+        buildfire.datastore.get(function(err,result){
+            if(err)
+                console.error(err);
+            else{
+                data = result.data;
+                if(location.protocol.indexOf('http') < 0)
+                    scheduleDrips(data.drips);
+            }
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--
+		NOTE:
+		1. You can reference the file in SDK via relative path
+		2. The Control and Widget Should NOT share resources. They will be separated in production.
+		3. You may include any JS framework you want with your Widget and Control folders. However, keep in mind
+		    to keep you plugin as light weight as possible for performance and transport reasons
+	-->
+
+    <!-- You can load helper.css to use our helper classes.
+    <link href="../../../../styles/helper.css" rel="stylesheet">
+    -->
+	
+	<!-- JS -->
+	<script src="../../../../scripts/buildfire.min.js"></script>
+   
+ 	<!--
+    <script src="../../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+   -->
+</head>
+<body>
+    <h3>Create Drip</h3>
+    <form>
+        <div class="form-group">
+            <label for="txtText">Text</label>
+            <input id="txtText" type="text" class="form-control" >
+        </div>
+        <div class="form-group">
+            <label for="txtDays">Occurs when a user doest return to the app in </label>
+            <input id="txtDays" type="number"  min="1" max="99" > Days
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success pull-right" onclick="add(); return false;">Add</button>
+        </div>
+    </form>
+    <h3>Current Drips</h3>
+    <table class="table table-striped">
+        <tbody id="tbl">
+
+        </tbody>
+    </table>
+
+    <script>
+        var data={
+            drips:[]
+        };
+
+        function add(){
+            debugger;
+            if(!data.drips)data.drips=[];
+            data.drips.push({
+                text : document.getElementById("txtText").value
+                ,days : parseInt(document.getElementById("txtDays").value)
+                ,createdOn: new Date()
+            });
+            buildfire.datastore.save(data,function(e){
+                if(e)
+                    console.error(e);
+                else{
+                    loadTable(data.drips);
+                    document.getElementById("txtText").value='';
+                    document.getElementById("txtDays").value='';
+                }
+            });
+        }
+
+        function loadTable(drips){
+            var tbl = document.getElementById("tbl");
+            tbl.innerHTML='';
+            if(!drips || !drips.length)return;
+            for(var i = 0 ; i < drips.length ; i++){
+                var tr = document.createElement('tr');
+
+                var td = document.createElement('td');
+                td.innerHTML=drips[i].text;
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.innerHTML=drips[i].days + " days";
+                tr.appendChild(td);
+
+                td = document.createElement('td');
+                td.innerHTML="Delete";
+                td.onclick=createDeleteHandler(tr,i);
+                tr.appendChild(td);
+
+                tbl.appendChild(tr);
+            }
+
+        }
+
+        function createDeleteHandler(tr,i){
+            return function() {
+                data.drips = data.drips.splice(i, 1);
+                var tbl = document.getElementById("tbl");
+                tbl.removeChild(tr);
+                buildfire.datastore.save(data,function(e){
+                    if(e) console.error(e);
+                })
+            };
+        }
+
+
+        buildfire.datastore.get(function(err,result){
+           if(err)
+               console.error(err);
+           else{
+               data = result.data;
+               loadTable(data.drips);
+           }
+        });
+
+    </script>
+</body>
+</html>

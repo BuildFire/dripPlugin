@@ -14,10 +14,10 @@
     <!-- You can load helper.css to use our helper classes.
     <link href="../../../../styles/helper.css" rel="stylesheet">
     -->
-	
+
 	<!-- JS -->
 	<script src="../../../../scripts/buildfire.min.js"></script>
-   
+
  	<!--
     <script src="../../../../scripts/angular/angular.min.js"></script>
     <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
@@ -26,26 +26,80 @@
    -->
 </head>
 <body>
+    <style>
+        .drip {
+            background-color: #F5F5F9;
+            padding: 10px;
+            border-radius: 10px;
+            position: relative;
+            margin: 20px 0;
+        }
+        .drip .title {
+            color: #222;
+            font-size: 18px;
+            margin: 0;
+        }
+        .drip .text {
+            margin: 5px 0;
+        }
+        .drip .days {
+            font-style: italic;
+            color: #6495ed;
+        }
+        .drip .tail {
+            position: absolute;
+            height: 0;
+            width: 0;
+            left: 20px;
+            bottom: -15px;
+            border-left: 10px solid #F5F5F9;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #F5F5F9;
+            border-bottom: 10px solid transparent;
+        }
+        .drip .delete {
+            padding: 5px 10px;
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #ff0404;
+            cursor: pointer;
+            transition-duration: 200ms;
+            -webkit-transition-duration: 200ms;
+        }
+        .drip .delete:hover {
+            background-color: red;
+            color: white;
+            transition-duration: 200ms;
+            -webkit-transition-duration: 200ms;
+        }
+    </style>
+
     <h3>Create Drip</h3>
     <form>
+        <div class="form-group">
+            <label for="txtTitle">Title</label>
+            <input id="txtTitle" type="text" class="form-control" >
+        </div>
         <div class="form-group">
             <label for="txtText">Text</label>
             <input id="txtText" type="text" class="form-control" >
         </div>
         <div class="form-group">
-            <label for="txtDays">Occurs when a user doest return to the app in </label>
-            <input id="txtDays" type="number"  min="1" max="99" > Days
+            <label for="txtDays">Occurs when a user doesn't return to the app in </label>
+            <input id="txtDays" type="number"  min="1" max="99" > days.
         </div>
         <div class="form-group">
             <button class="btn btn-success pull-right" onclick="add(); return false;">Add</button>
         </div>
     </form>
     <h3>Current Drips</h3>
-    <table class="table table-striped">
-        <tbody id="tbl">
+    <div id="drips">
 
-        </tbody>
-    </table>
+    </div>
 
     <script>
         var data={
@@ -56,51 +110,68 @@
             debugger;
             if(!data.drips)data.drips=[];
             data.drips.push({
-                text : document.getElementById("txtText").value
-                ,days : parseInt(document.getElementById("txtDays").value)
-                ,createdOn: new Date()
+                title : document.getElementById('txtTitle').value,
+                text : document.getElementById("txtText").value,
+                days : parseInt(document.getElementById("txtDays").value),
+                createdOn: new Date()
             });
             buildfire.datastore.save(data,function(e){
                 if(e)
                     console.error(e);
                 else{
                     loadTable(data.drips);
-                    document.getElementById("txtText").value='';
-                    document.getElementById("txtDays").value='';
+                    document.getElementById("txtTitle").value = '';
+                    document.getElementById("txtText").value = '';
+                    document.getElementById("txtDays").value = '';
                 }
             });
         }
 
         function loadTable(drips){
-            var tbl = document.getElementById("tbl");
-            tbl.innerHTML='';
-            if(!drips || !drips.length)return;
-            for(var i = 0 ; i < drips.length ; i++){
-                var tr = document.createElement('tr');
+            var dripsContainer = document.getElementById("drips");
+            dripsContainer.className = 'drips-container';
 
-                var td = document.createElement('td');
-                td.innerHTML=drips[i].text;
-                tr.appendChild(td);
+            dripsContainer.innerHTML = '';
+            if (!drips || !drips.length) return;
+            for (var i = 0 ; i < drips.length ; i++) {
+                var div = document.createElement('div');
+                div.className = 'drip';
 
-                td = document.createElement('td');
-                td.innerHTML=drips[i].days + " days";
-                tr.appendChild(td);
+                var h1 = document.createElement('h1');
+                h1.innerHTML=drips[i].title;
+                h1.className = 'title';
+                div.appendChild(h1);
 
-                td = document.createElement('td');
-                td.innerHTML="Delete";
-                td.onclick=createDeleteHandler(tr,i);
-                tr.appendChild(td);
+                var p = document.createElement('p');
+                p.innerHTML=drips[i].text;
+                p.className = 'text'
+                div.appendChild(p);
 
-                tbl.appendChild(tr);
+                var span = document.createElement('span');
+                span.innerHTML = "Sent after " + drips[i].days + (drips[i].days === 1 ? " day" : " days") + " of innactivity";
+                span.className = 'days';
+                div.appendChild(span);
+
+                span = document.createElement('span');
+                span.innerHTML = "Delete";
+                span.onclick = createDeleteHandler(div, i);
+                span.className = 'delete';
+                div.appendChild(span);
+
+                span = document.createElement('span');
+                span.className = 'tail'
+                div.appendChild(span);
+
+                dripsContainer.appendChild(div);
             }
 
         }
 
-        function createDeleteHandler(tr,i){
+        function createDeleteHandler(drip,i){
             return function() {
                 data.drips = data.drips.splice(i, 1);
-                var tbl = document.getElementById("tbl");
-                tbl.removeChild(tr);
+                var drips = document.getElementById("drips");
+                drips.removeChild(drip);
                 buildfire.datastore.save(data,function(e){
                     if(e) console.error(e);
                 })

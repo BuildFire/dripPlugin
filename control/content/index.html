@@ -107,11 +107,15 @@
         };
 
         function add(){
-            debugger;
             if(!data.drips)data.drips=[];
+            var title = document.getElementById('txtTitle').value;
+            var text = document.getElementById("txtText").value;
+
+            if (!title.length || !text.length) return;
+
             data.drips.push({
-                title : document.getElementById('txtTitle').value,
-                text : document.getElementById("txtText").value,
+                title : title,
+                text : text,
                 days : parseInt(document.getElementById("txtDays").value),
                 createdOn: new Date()
             });
@@ -130,6 +134,8 @@
         function loadTable(drips){
             var dripsContainer = document.getElementById("drips");
             dripsContainer.className = 'drips-container';
+
+            console.log(drips);
 
             dripsContainer.innerHTML = '';
             if (!drips || !drips.length) return;
@@ -169,7 +175,7 @@
 
         function createDeleteHandler(drip,i){
             return function() {
-                data.drips = data.drips.splice(i, 1);
+                data.drips.splice(i, 1);
                 var drips = document.getElementById("drips");
                 drips.removeChild(drip);
                 buildfire.datastore.save(data,function(e){

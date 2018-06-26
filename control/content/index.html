@@ -45,6 +45,8 @@
         .drip .days {
             font-style: italic;
             color: #6495ed;
+            margin-bottom: 10px;
+            display: block;
         }
         .drip .tail {
             position: absolute;
@@ -93,7 +95,7 @@
             <input id="txtDays" type="number"  min="1" max="99" > days.
         </div>
         <div class="form-group">
-            <button class="btn btn-success pull-right" onclick="add(); return false;">Add</button>
+            <button class="btn btn-success pull-right" onclick="window.drip.add(); return false;">Add</button>
         </div>
     </form>
     <h3>Current Drips</h3>
@@ -106,12 +108,14 @@
             drips:[]
         };
 
-        function add(){
+        window.drip = {};
+
+        window.drip.add = function (){
             if(!data.drips)data.drips=[];
             var title = document.getElementById('txtTitle').value;
             var text = document.getElementById("txtText").value;
 
-            if (!title.length || !text.length) return;
+            if (!title || !title.length || !text || !text.length) return;
 
             data.drips.push({
                 title : title,
@@ -143,6 +147,11 @@
                 var div = document.createElement('div');
                 div.className = 'drip';
 
+                var span = document.createElement('span');
+                span.innerHTML = drips[i].days + (drips[i].days === 1 ? " day" : " days");
+                span.className = 'days';
+                div.appendChild(span);
+
                 var h1 = document.createElement('h1');
                 h1.innerHTML=drips[i].title;
                 h1.className = 'title';
@@ -152,11 +161,6 @@
                 p.innerHTML=drips[i].text;
                 p.className = 'text'
                 div.appendChild(p);
-
-                var span = document.createElement('span');
-                span.innerHTML = "Sent after " + drips[i].days + (drips[i].days === 1 ? " day" : " days") + " of innactivity";
-                span.className = 'days';
-                div.appendChild(span);
 
                 span = document.createElement('span');
                 span.innerHTML = "Delete";

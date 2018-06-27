@@ -2,28 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!--
-		NOTE:
-		1. You can reference the file in SDK via relative path
-		2. The Control and Widget Should NOT share resources. They will be separated in production.
-		3. You may include any JS framework you want with your Widget and Control folders. However, keep in mind
-		    to keep you plugin as light weight as possible for performance and transport reasons
-	-->
-
-    <!-- You can load helper.css to use our helper classes.
-    <link href="../../../../styles/helper.css" rel="stylesheet">
-    -->
-
-	<!-- JS -->
 	<script src="../../../../scripts/buildfire.min.js"></script>
-
- 	<!--
-    <script src="../../../../scripts/angular/angular.min.js"></script>
-    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
-
-   <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-   -->
 </head>
 <body>
     <style>
@@ -48,17 +27,6 @@
             margin-bottom: 10px;
             display: block;
         }
-        .drip .tail {
-            position: absolute;
-            height: 0;
-            width: 0;
-            left: 20px;
-            bottom: -15px;
-            border-left: 10px solid #F5F5F9;
-            border-right: 10px solid transparent;
-            border-top: 10px solid #F5F5F9;
-            border-bottom: 10px solid transparent;
-        }
         .drip .delete {
             padding: 5px 10px;
             background-color: rgba(0,0,0,0.03);
@@ -78,28 +46,76 @@
             transition-duration: 200ms;
             -webkit-transition-duration: 200ms;
         }
+
+        .content-section-title {
+            width: 100%;
+            padding: 16px 30px 0;
+            display: inline-block;
+        }
+
+        .content-section-title .top-line {
+            float: left;
+            clear: both;
+            border-top: 4px solid #000;
+            width: 57px;
+        }
+        h5{
+            float: left;
+            clear: both;
+            font-family: Conv_apercu_bold;
+            color: #000;
+            font-size: 18px;
+            line-height: 18px;
+        }
+        .content {
+            border-radius: 4px;
+            background-color: #fff;
+            border: solid 1px #d8d8d8;
+            padding: 16px 193px 16px 28px;
+            float: left;
+            clear: both;
+            margin-bottom: 8px;
+        }
+        .validation {
+            visibility: visible;
+            color: #ff0033;
+        }
+        .validation-hidden {
+            visibility: hidden;
+        }
     </style>
 
-    <h3>Create Drip</h3>
-    <form>
+    <div class="content-section-title">
+        <span class="top-line"></span>
+        <h5>Create Drip</h5>
+    </div>
+
+    <form class="content">
         <div class="form-group">
             <label for="txtTitle">Title</label>
-            <input id="txtTitle" type="text" class="form-control" >
+            <input id="txtTitle" type="text" class="form-control" placeholder="We miss you!"></span>
         </div>
         <div class="form-group">
             <label for="txtText">Text</label>
-            <input id="txtText" type="text" class="form-control" >
+            <input id="txtText" type="text" class="form-control" placeholder="Come see the great new features in our app!">
         </div>
         <div class="form-group">
             <label for="txtDays">Occurs when a user doesn't return to the app in </label>
-            <input id="txtDays" type="number"  min="1" max="99" > days.
+            <input id="txtDays" type="number" value="1" min="1" max="99" > day(s).
         </div>
         <div class="form-group">
+            <div id="validationMessage" class="validation-hidden">You must specify Title and Text.</div>
             <button class="btn btn-success pull-right" onclick="window.drip.add(); return false;">Add</button>
         </div>
     </form>
-    <h3>Current Drips</h3>
-    <div id="drips">
+
+    <div class="content-section-title">
+        <span class="top-line"></span>
+        <h5>Current Drips</h5>
+    </div>
+
+
+    <div id="drips" class="content">
 
     </div>
 
@@ -114,8 +130,14 @@
             if(!data.drips)data.drips=[];
             var title = document.getElementById('txtTitle').value;
             var text = document.getElementById("txtText").value;
+            var days = document.getElementById("txtDays").value;
 
-            if (!title || !title.length || !text || !text.length) return;
+            if (!title || !title.length || !text || !text.length || !parseInt(days)){
+                document.getElementById('validationMessage').className = 'validation';
+                return;
+            }
+
+            document.getElementById('validationMessage').className = 'validation-hidden';
 
             data.drips.push({
                 title : title,
@@ -123,6 +145,7 @@
                 days : parseInt(document.getElementById("txtDays").value),
                 createdOn: new Date()
             });
+
             buildfire.datastore.save(data,function(e){
                 if(e)
                     console.error(e);
@@ -130,10 +153,12 @@
                     loadTable(data.drips);
                     document.getElementById("txtTitle").value = '';
                     document.getElementById("txtText").value = '';
-                    document.getElementById("txtDays").value = '';
+                    var days = document.getElementById("txtDays").value;
+
+                    document.getElementById("txtDays").value = (parseInt(days)) ? parseInt(days) + 1 : '';
                 }
             });
-        }
+        };
 
         function loadTable(drips){
             var dripsContainer = document.getElementById("drips");
@@ -159,7 +184,7 @@
 
                 var p = document.createElement('p');
                 p.innerHTML=drips[i].text;
-                p.className = 'text'
+                p.className = 'text';
                 div.appendChild(p);
 
                 span = document.createElement('span');
@@ -169,7 +194,7 @@
                 div.appendChild(span);
 
                 span = document.createElement('span');
-                span.className = 'tail'
+                span.className = 'tail';
                 div.appendChild(span);
 
                 dripsContainer.appendChild(div);
@@ -187,7 +212,6 @@
                 })
             };
         }
-
 
         buildfire.datastore.get(function(err,result){
            if(err)

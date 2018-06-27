@@ -2,112 +2,43 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
 	<script src="../../../../scripts/buildfire.min.js"></script>
 </head>
 <body>
-    <style>
-        .drip {
-            background-color: #F5F5F9;
-            padding: 10px;
-            border-radius: 10px;
-            position: relative;
-            margin: 20px 0;
-        }
-        .drip .title {
-            color: #222;
-            font-size: 18px;
-            margin: 0;
-        }
-        .drip .text {
-            margin: 5px 0;
-        }
-        .drip .days {
-            font-style: italic;
-            color: #6495ed;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .drip .delete {
-            padding: 5px 10px;
-            background-color: rgba(0,0,0,0.03);
-            border-radius: 5px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 12px;
-            color: #ff0404;
-            cursor: pointer;
-            transition-duration: 200ms;
-            -webkit-transition-duration: 200ms;
-        }
-        .drip .delete:hover {
-            background-color: red;
-            color: white;
-            transition-duration: 200ms;
-            -webkit-transition-duration: 200ms;
-        }
-
-        .content-section-title {
-            width: 100%;
-            padding: 16px 30px 0;
-            display: inline-block;
-        }
-
-        .content-section-title .top-line {
-            float: left;
-            clear: both;
-            border-top: 4px solid #000;
-            width: 57px;
-        }
-        h5{
-            float: left;
-            clear: both;
-            font-family: Conv_apercu_bold;
-            color: #000;
-            font-size: 18px;
-            line-height: 18px;
-        }
-        .content {
-            border-radius: 4px;
-            background-color: #fff;
-            border: solid 1px #d8d8d8;
-            padding: 16px 193px 16px 28px;
-            float: left;
-            clear: both;
-            margin-bottom: 8px;
-        }
-        .validation {
-            visibility: visible;
-            color: #ff0033;
-        }
-        .validation-hidden {
-            visibility: hidden;
-        }
-    </style>
-
     <div class="content-section-title">
         <span class="top-line"></span>
         <h5>Create Drip</h5>
     </div>
 
-    <form class="content">
-        <div class="form-group">
-            <label for="txtTitle">Title</label>
-            <input id="txtTitle" type="text" class="form-control" placeholder="We miss you!"></span>
+    <section>
+        <div class="item clearfix row">
+            <div class="labels pull-left col-xs-2">
+                <span>Title*</span>
+            </div>
+            <div class="main pull-left col-xs-10">
+                <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="txtText">Text</label>
-            <input id="txtText" type="text" class="form-control" placeholder="Come see the great new features in our app!">
+        <div class="item clearfix row">
+            <div class="labels pull-left col-xs-2">
+                <span>Description*</span>
+            </div>
+            <div class="main pull-left col-xs-10">
+                <input id="txtText" type="text" class="form-control" placeholder="Enter Description">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="txtDays">Occurs when a user doesn't return to the app in </label>
-            <input id="txtDays" type="number" value="1" min="1" max="99" > day(s).
+        <div class="item clearfix row">
+            <div class="labels pull-left col-xs-2">
+                <span>Days*</span>
+            </div>
+            <div class="main pull-left col-xs-10">
+                <input id="txtDays" type="number" value="1" min="1" max="99">
+            </div>
         </div>
-        <div class="form-group">
-            <div id="validationMessage" class="validation-hidden">You must specify Title and Text.</div>
-            <button class="btn btn-success pull-right" onclick="window.drip.add(); return false;">Add</button>
-        </div>
-    </form>
+    </section>
+
+    <button class="btn btn-primary pull-right" onclick="window.drip.add(); return false;">Add Drip</button>
 
     <div class="content-section-title">
         <span class="top-line"></span>
@@ -133,11 +64,8 @@
             var days = document.getElementById("txtDays").value;
 
             if (!title || !title.length || !text || !text.length || !parseInt(days)){
-                document.getElementById('validationMessage').className = 'validation';
                 return;
             }
-
-            document.getElementById('validationMessage').className = 'validation-hidden';
 
             data.drips.push({
                 title : title,

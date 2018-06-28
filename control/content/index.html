@@ -29,11 +29,13 @@
             </div>
         </div>
         <div class="item clearfix row">
-            <div class="labels pull-left col-xs-2">
-                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip="Occurs when a user doesn't return to the app in the specified amount of days." tooltip-placement="top"></span></span>
+            <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">i <span class="tooltip-container">
+                    Occurs when a user doesn't return to the app in the specified amount of days.
+                </span></span></span>
             </div>
             <div class="main pull-left col-xs-10">
-                <input id="txtDays" type="number" value="1" min="1" max="99">
+                <input class="form-control" id="txtDays" type="number" value="1" min="1" max="99">
             </div>
         </div>
     </section>

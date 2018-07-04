@@ -155,3 +155,11 @@ span {
     transition-duration: 150ms;
     -webkit-transition-duration: 150ms;
 }
+#myModal {
+    position: fixed;
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}

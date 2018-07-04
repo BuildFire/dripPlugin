@@ -160,6 +160,11 @@
             return function() {
                 window.dripToDelete = i;
                 window.dripToDeleteElem = drip;
+
+                var rect = drip.getBoundingClientRect();
+
+                var modal = document.getElementById('myModal');
+                modal.style.top = rect.top - 50 + 'px';
             };
         }
 

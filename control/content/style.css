@@ -172,3 +172,6 @@ span {
 .modal:not(.in) {
     pointer-events: none !important;
 }
+textarea.form-control {
+    margin-bottom: 5px;
+}

@@ -11,6 +11,10 @@
         <h5>Create Drip</h5>
     </div>
 
+    <div id="error" class="alert alert-danger hidden">
+        Please fill in all the fields.
+    </div>
+
     <section>
         <div class="item clearfix row">
             <div class="labels pull-left col-xs-2">
@@ -25,7 +29,7 @@
                 <span>Description*</span>
             </div>
             <div class="main pull-left col-xs-10">
-                <input id="txtText" type="text" class="form-control" placeholder="Enter Description">
+                <textarea id="txtText" class="form-control" placeholder="Enter Description"></textarea>
             </div>
         </div>
         <div class="item clearfix row">
@@ -87,8 +91,12 @@
             var text = document.getElementById("txtText").value;
             var days = document.getElementById("txtDays").value;
 
+            var error = document.getElementById('error');
             if (!title || !title.length || !text || !text.length || !parseInt(days)){
+                error.className = 'alert alert-danger';
                 return;
+            } else {
+                error.className = 'hidden';
             }
 
             data.drips.push({

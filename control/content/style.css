@@ -163,3 +163,6 @@ span {
     left: 0;
     right: 0;
 }
+.modal:not(.in) {
+    pointer-events: none !important;
+}

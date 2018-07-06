@@ -16,6 +16,7 @@
 }
 ,"widget":{
   "service":"service.html"
+  , "enabled": false
 },
   "features" : [],
   "languages" : ["en"]

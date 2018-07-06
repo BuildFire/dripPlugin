@@ -1,3 +1,6 @@
+.drips-container > .drip:nth-of-type(odd) {
+    background: #fafafa;
+}
 .drip {
     background-color: #FFFFFF;
     border: solid 1px #d8d8d8;
@@ -46,9 +49,11 @@
     color: #000;
 }
 .drip .delete:hover {
-    color: white;
     transition-duration: 200ms;
     -webkit-transition-duration: 200ms;
+}
+.drip .delete:hover a {
+    color: red;
 }
 .alert {
     margin-bottom: 20px;

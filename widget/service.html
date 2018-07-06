@@ -37,7 +37,7 @@
                     ,text: drips[i].text
                     //,data: actionItem
                     ,at: now.setDate(now.getDate() + drips[i].days)
-                    //,returnToPluginInstanceId: '' //optional
+                    ,returnToPluginInstanceId: 'home' //optional
                 };
                 buildfire.notifications.localNotification.schedule(options, function (err, data) {
                     ids.push(data.id);

@@ -15,7 +15,8 @@
   }
 }
 ,"widget":{
-  "service":"service.html"
+  "service":"service.html",
+  "enabled": false
 },
   "features" : [],
   "languages" : ["en"]

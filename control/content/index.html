@@ -94,10 +94,21 @@
             var error = document.getElementById('error');
             if (!title || !title.length || !text || !text.length || !parseInt(days)){
                 error.className = 'alert alert-danger';
+                error.innerHTML = "Please fill in all the fields.";
                 return;
             } else {
                 error.className = 'hidden';
             }
+
+            data.drips.forEach(function(drip) {
+                if (drip.days === parseInt(days)) {
+                    error.className = 'alert alert-danger';
+                    error.innerHTML = "You already have a drip assigned for that day.";
+                    return;
+                } else {
+                    error.className = 'hidden';
+                }
+            })
 
             data.drips.push({
                 title : title,

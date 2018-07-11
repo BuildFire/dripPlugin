@@ -21,7 +21,7 @@
                 <span>Title*</span>
             </div>
             <div class="main pull-left col-xs-10">
-                <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title"></span>
+                <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title" maxlength="50" ></span>
             </div>
         </div>
         <div class="item clearfix row">
@@ -29,7 +29,7 @@
                 <span>Message*</span>
             </div>
             <div class="main pull-left col-xs-10">
-                <textarea id="txtText" class="form-control" placeholder="Enter Description"></textarea>
+                <textarea id="txtText" class="form-control" placeholder="Enter Message" maxlength="75"></textarea>
             </div>
         </div>
         <div class="item clearfix row">
@@ -39,7 +39,7 @@
                 </span></span></span>
             </div>
             <div class="main pull-left col-xs-10">
-                <input class="form-control drip-day-input" id="txtDays" type="number" value="1" min="1" max="99">
+                <input class="form-control drip-day-input" id="txtDays" type="number" value="1" min="1" max="50">
             </div>
         </div>
     </section>
@@ -113,9 +113,9 @@
                     loadTable(data.drips);
                     document.getElementById("txtTitle").value = '';
                     document.getElementById("txtText").value = '';
+                    document.getElementById("txtDays").value = '';
                     var days = document.getElementById("txtDays").value;
 
-                    document.getElementById("txtDays").value = (parseInt(days)) ? parseInt(days) + 1 : '';
                 }
             });
         };

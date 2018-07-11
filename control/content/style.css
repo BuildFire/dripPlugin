@@ -80,6 +80,7 @@ h5{
     color: #000 !important;
     font-size: 18px !important;
     line-height: 18px;
+    font-weight: 600 !important;
 }
 .content {
 
@@ -168,9 +169,6 @@ span {
 }
 #myModal {
     position: fixed;
-    display: block;
-    width: 50%;
-    margin: 0 auto;
     left: 0;
     right: 0;
 }

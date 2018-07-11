@@ -8,7 +8,7 @@
 <body>
     <div class="content-section-title">
         <span class="top-line"></span>
-        <h5>Create Drip</h5>
+        <h5>Create Drip Notification</h5>
     </div>
 
     <div id="error" class="alert alert-danger hidden">
@@ -44,11 +44,11 @@
         </div>
     </section>
 
-    <button class="btn btn-primary pull-right" onclick="window.drip.add(); return false;">Add Drip</button>
+    <button class="btn btn-primary pull-right" onclick="window.drip.add(); return false;">Add Drip Notification</button>
 
     <div class="content-section-title">
         <span class="top-line"></span>
-        <h5>Current Drips</h5>
+        <h5>Current Drip Notifications</h5>
     </div>
 
 
@@ -99,6 +99,14 @@
             } else {
                 error.className = 'hidden';
             }
+
+            if (parseInt(days) > 50) {
+                    error.className = 'alert alert-danger';
+                    error.innerHTML = "The maximum number of days can be 50.";
+                    return;
+                } else {
+                    error.className = 'hidden';
+                }
 
             data.drips.forEach(function(drip) {
                 if (drip.days === parseInt(days)) {

@@ -178,3 +178,6 @@ span {
 textarea.form-control {
     margin-bottom: 5px;
 }
+.modal-header .close {
+    margin-top: -8px !important;
+}

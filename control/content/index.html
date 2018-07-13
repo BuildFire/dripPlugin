@@ -17,16 +17,20 @@
 
     <section>
         <div class="item clearfix row">
-            <div class="labels pull-left col-xs-2">
-                <span>Title*</span>
+            <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>Title* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">i <span class="tooltip-container">
+                    20 characters max
+                </span></span></span>
             </div>
             <div class="main pull-left col-xs-10">
                 <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title" maxlength="50" ></span>
             </div>
         </div>
         <div class="item clearfix row">
-            <div class="labels pull-left col-xs-2">
-                <span>Message*</span>
+            <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>Message* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">i <span class="tooltip-container">
+                    70 characters max
+                </span></span></span>
             </div>
             <div class="main pull-left col-xs-10">
                 <textarea id="txtText" rows="2" class="form-control" placeholder="Enter Message" maxlength="75"></textarea>
@@ -49,6 +53,10 @@
     <div class="content-section-title">
         <span class="top-line"></span>
         <h5>Current Drip Notifications</h5>
+    </div>
+
+    <div id="nodrips">
+        <h2>There are no scheduled drips</h2>
     </div>
 
 
@@ -156,7 +164,12 @@
             var dripsContainer = document.getElementById("drips");
             dripsContainer.className = 'drips-container';
 
-            console.log(drips);
+            var noDrips = document.getElementById('nodrips');
+            if (drips.length) {
+                noDrips.className = 'hidden';
+            } else {
+                noDrips.className = '';
+            }
 
             dripsContainer.innerHTML = '';
             if (!drips || !drips.length) return;
@@ -215,6 +228,7 @@
             drips.removeChild(window.dripToDeleteElem);
             buildfire.publicData.save(data,function(e){
                 if(e) console.error(e);
+                loadTable([]);
             })
         }
 

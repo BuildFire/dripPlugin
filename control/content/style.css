@@ -21,7 +21,7 @@
 .drip .text {
     margin: 5px 0;
     padding-right: 50px;
-    word-break: break-all;
+    word-break: break-all !important;
 }
 .drip .days {
     color: #5f5f5f;
@@ -186,4 +186,9 @@ textarea.form-control {
 }
 .modal-header .close {
     margin-top: -8px !important;
+}
+#nodrips {
+    text-align: center;
+    font-size: 0.7em;
+    opacity: 0.75;
 }

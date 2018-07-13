@@ -19,5 +19,6 @@
   "enabled": false
 },
   "features" : [],
-  "languages" : ["en"]
+  "languages" : ["en"],
+  "singleton": true
 }

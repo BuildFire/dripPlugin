@@ -29,7 +29,7 @@
                 <span>Message*</span>
             </div>
             <div class="main pull-left col-xs-10">
-                <textarea id="txtText" class="form-control" placeholder="Enter Message" maxlength="75"></textarea>
+                <textarea id="txtText" rows="2" class="form-control" placeholder="Enter Message" maxlength="75"></textarea>
             </div>
         </div>
         <div class="item clearfix row">
@@ -85,54 +85,67 @@
           confirmDeleteDrip();
         };
 
+        function htmlEntities(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
         window.drip.add = function (){
             if(!data.drips)data.drips=[];
+            var error = document.getElementById('error');
+
             var title = document.getElementById('txtTitle').value;
             var text = document.getElementById("txtText").value;
             var days = document.getElementById("txtDays").value;
 
-            var error = document.getElementById('error');
+            if (parseInt(days) < 1) {
+                error.className = 'alert alert-danger';
+                error.innerHTML = "Please input a valid number of days";
+                return;
+            }
+
+            if (parseInt(days) > 50) {
+                error.className = 'alert alert-danger';
+                error.innerHTML = "The maximum number of days can be 50.";
+                return;
+            }
+
             if (!title || !title.length || !text || !text.length || !parseInt(days)){
                 error.className = 'alert alert-danger';
                 error.innerHTML = "Please fill in all the fields.";
                 return;
-            } else {
-                error.className = 'hidden';
             }
 
-            if (parseInt(days) > 50) {
-                    error.className = 'alert alert-danger';
-                    error.innerHTML = "The maximum number of days can be 50.";
-                    return;
-                } else {
-                    error.className = 'hidden';
-                }
-
+            var repeatedDrip = false;
             data.drips.forEach(function(drip) {
                 if (drip.days === parseInt(days)) {
                     error.className = 'alert alert-danger';
                     error.innerHTML = "You already have a drip assigned for that day.";
+                    repeatedDrip = true;
                     return;
-                } else {
-                    error.className = 'hidden';
                 }
-            })
+            });
+
+            if (!repeatedDrip) {
+                error.className = 'hidden';
+            } else {
+                return;
+            }
 
             data.drips.push({
-                title : title,
-                text : text,
+                title : htmlEntities(title),
+                text : htmlEntities(text),
                 days : parseInt(document.getElementById("txtDays").value),
                 createdOn: new Date()
             });
 
-            buildfire.datastore.save(data,function(e){
+            buildfire.publicData.save(data,function(e){
                 if(e)
                     console.error(e);
                 else{
                     loadTable(data.drips);
                     document.getElementById("txtTitle").value = '';
                     document.getElementById("txtText").value = '';
-                    document.getElementById("txtDays").value = '';
+                    document.getElementById("txtDays").value = '1';
                     var days = document.getElementById("txtDays").value;
 
                 }
@@ -200,12 +213,12 @@
 
             var drips = document.getElementById("drips");
             drips.removeChild(window.dripToDeleteElem);
-            buildfire.datastore.save(data,function(e){
+            buildfire.publicData.save(data,function(e){
                 if(e) console.error(e);
             })
         }
 
-        buildfire.datastore.get(function(err,result){
+        buildfire.publicData.get(function(err,result){
            if(err)
                console.error(err);
            else{

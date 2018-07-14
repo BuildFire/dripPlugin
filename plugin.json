@@ -1,23 +1,26 @@
 {
-  "author":"Alex Cavazos"
-,"pluginName":"Drip Campaign - Alex"
-,"pluginDescription":"This allows you to schedule drip notification to bring your users back into the app"
-,"supportEmail":"devSupport@buildfire.com"
-,"control":{
-  "content":{
-    "enabled":true
-  }
-, "design":{
-    "enabled":false
-  }
-, "settings":{
-    "enabled":false
-  }
-}
-,"widget":{
-  "service":"service.html",
-  "enabled": false
-  "features" : [],
-  "languages" : ["en"],
-  "singleton": true
+  "author": "Alex Cavazos",
+  "pluginName": "Drip Campaign - Alex",
+  "pluginDescription": "This allows you to schedule drip notification to bring your users back into the app",
+  "supportEmail": "devSupport@buildfire.com",
+  "singleton": true,
+  "control": {
+    "content": {
+      "enabled": true
+    },
+    "design": {
+      "enabled": false
+    },
+    "settings": {
+      "enabled": false
+    }
+  },
+  "widget": {
+    "service": "service.html",
+    "enabled": false
+  },
+  "features": [
+    { "name": "localNotification" }
+  ],
+  "languages": ["en"]
 }

@@ -55,7 +55,7 @@
         <h5>Current Drip Notifications</h5>
     </div>
 
-    <div id="nodrips">
+    <div id="nodrips" className="hidden">
         <h2>There are no scheduled drips</h2>
     </div>
 
@@ -146,7 +146,7 @@
                 createdOn: new Date()
             });
 
-            buildfire.publicData.save(data,function(e){
+            buildfire.datastore.save(data,function(e){
                 if(e)
                     console.error(e);
                 else{
@@ -226,13 +226,13 @@
 
             var drips = document.getElementById("drips");
             drips.removeChild(window.dripToDeleteElem);
-            buildfire.publicData.save(data,function(e){
+            buildfire.datastore.save(data,function(e){
                 if(e) console.error(e);
                 loadTable([]);
             })
         }
 
-        buildfire.publicData.get(function(err,result){
+        buildfire.datastore.get(function(err,result){
            if(err)
                console.error(err);
            else{

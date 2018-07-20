@@ -8,21 +8,27 @@
     <script src="../../../scripts/buildfire/services/notifications/localNotifications.js"></script>
     <script>
         function cancelAllPreviousDrips() {
-            var sIds = localStorage.getItem("dripIds");
-            if (sIds) {
-                var ids;
+            var idString = localStorage.getItem("dripIds");
+            if (idString) {
 
-                ids = sIds.split(",");
+               var ids = idString.split(",");
                 localStorage.setItem("dripIds", ids);
                 for (var i = 0; i < ids.length; i++) {
-                    buildfire.notifications.localNotification.cancel(ids[i], function (e) {
+                    buildfire.notifications.localNotification.cancel(ids[i], function (e, data) {
                         if (e) console.error(e);
+                        console.log('Notification cancelled', data);
                     });
                 }
             }
         }
         cancelAllPreviousDrips();
 
+        buildfire.device.onAppResumed(function () {
+                localStorage.applicationResumed = new Date().toISOString();
+                cancelAllPreviousDrips();
+                loadDrips();
+            }
+        );
 
         function scheduleDrips(drips){
 
@@ -41,26 +47,25 @@
                 };
                 buildfire.notifications.localNotification.schedule(options, function (err, data) {
                     ids.push(data.id);
+                    localStorage.setItem("dripIds", ids.join(','));
                 });
-
             }
-
-            ///cheap hack
-            setTimeout(function(){
-                localStorage.setItem("dripIds",ids);
-            },3000);
 
         }
 
-        buildfire.datastore.get(function(err,result){
-            if(err)
-                console.error(err);
-            else{
-                data = result.data;
-                if(location.protocol.indexOf('http') < 0)
-                    scheduleDrips(data.drips);
-            }
-        });
+        function loadDrips() {
+            buildfire.datastore.get(function(err,result){
+                if(err)
+                    console.error(err);
+                else{
+
+                    data = result.data;
+                    if(location.protocol.indexOf('http') < 0)
+                        scheduleDrips(data.drips);
+                }
+            });
+        }
+        loadDrips();
     </script>
 </head>
 <body>

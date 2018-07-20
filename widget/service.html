@@ -59,11 +59,6 @@
                     console.error(err);
                 else{
 
-                    setTimeout(function() {
-                        console.log('Scheduled drips');
-                        console.log(result);
-                    }, 15000);
-
                     data = result.data;
                     if(location.protocol.indexOf('http') < 0)
                         scheduleDrips(data.drips);

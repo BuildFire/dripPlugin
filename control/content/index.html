@@ -228,7 +228,7 @@
             drips.removeChild(window.dripToDeleteElem);
             buildfire.datastore.save(data,function(e){
                 if(e) console.error(e);
-                loadTable([]);
+                loadTable(data.drips);
             })
         }
 

@@ -46,8 +46,10 @@
                     ,returnToPluginInstanceId: 'home' //optional
                 };
                 buildfire.notifications.localNotification.schedule(options, function (err, data) {
-                    ids.push(data.id);
-                    localStorage.setItem("dripIds", ids.join(','));
+                    if(data && data.id){
+			    ids.push(data.id);
+	                    localStorage.setItem("dripIds", ids.join(','));
+		    }
                 });
             }
 

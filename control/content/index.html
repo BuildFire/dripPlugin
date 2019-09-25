@@ -2,14 +2,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../../styles/helper.css">
     <link rel="stylesheet" type="text/css" href="style.css">
-	<script src="../../../../scripts/buildfire.min.js"></script>
+    <link rel="stylesheet" href="../assets/icomoon/pluginIcons.css">
+
+    <script src="../../../../scripts/buildfire.min.js"></script>
 </head>
 <body>
     <div class="content-section-title">
         <span class="top-line"></span>
         <h5>Create Drip Notification</h5>
     </div>
+    <p class="info__note">Drips will be sent as notifications if the app is not opened after the set amount of days.</p>
+
+    <button class="btn btn-success btn--lg" onclick="window.drip.add(); return false;">Add Drip Notification</button>
 
     <div id="error" class="alert alert-danger hidden">
         Please fill in all the fields.
@@ -18,7 +24,7 @@
     <section>
         <div class="item clearfix row">
             <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Title* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">i <span class="tooltip-container">
+                <span>Title* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top"> <span class="tooltip-container">
                     20 characters max
                 </span></span></span>
             </div>
@@ -28,7 +34,7 @@
         </div>
         <div class="item clearfix row">
             <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Message* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">i <span class="tooltip-container">
+                <span>Message* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top"> <span class="tooltip-container">
                     70 characters max
                 </span></span></span>
             </div>
@@ -38,7 +44,7 @@
         </div>
         <div class="item clearfix row">
             <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">i <span class="tooltip-container">
+                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top"> <span class="tooltip-container">
                     Occurs when a user doesn't return to the app in the specified amount of days.
                 </span></span></span>
             </div>
@@ -46,9 +52,14 @@
                 <input class="form-control drip-day-input" id="txtDays" type="number" value="1" min="1" max="60">
             </div>
         </div>
+        <div class="bottom__actions">
+            <button class="btn btn--ghost">Cancel</button>
+            <!-- Change between save/add, depending on edit or create drip -->
+            <!-- <button class="btn btn-primary btn--lg">Save</button> -->
+            <button class="btn btn-success btn--lg" onclick="window.drip.add(); return false;">Add</button>
+        </div>
     </section>
 
-    <button class="btn btn-primary pull-right" onclick="window.drip.add(); return false;">Add Drip Notification</button>
 
     <div class="content-section-title">
         <span class="top-line"></span>
@@ -56,11 +67,42 @@
     </div>
 
     <div id="nodrips" className="hidden">
-        <h2>There are no scheduled drips</h2>
+        <p class="empty">There are no scheduled drips</p>
     </div>
 
 
-    <div id="drips" class="content"></div>
+    <!-- <div id="drips" class="content"></div> -->
+
+    <div class="drips">
+        <div class="drip">
+            <div class="drip__header">
+                <p class="text--secondary"><span class="icon icon-clock"></span> 1 day after app was last oppened</p>
+                <div class="drip__header__actions">
+                    <button class="btn btn--icon"><span class="icon icon-chart-growth"></span></button>
+                    <button class="btn btn--icon"><span class="icon icon-pencil3"></span></button>
+                    <button class="btn btn--icon"><span class="icon icon-cross2"></span></button>
+                </div>
+            </div>
+            <div class="drip__body">
+                <h6 class="drip__title">Drip Title</h6>
+                <p class="drip__message">Drip Message</p>
+            </div>
+        </div>
+        <div class="drip">
+            <div class="drip__header">
+                <p class="text--secondary"><span class="icon icon-clock"></span> 1 day after app was last oppened</p>
+                <div class="drip__header__actions">
+                    <button class="btn btn--icon"><span class="icon icon-chart-growth"></span></button>
+                    <button class="btn btn--icon"><span class="icon icon-pencil3"></span></button>
+                    <button class="btn btn--icon"><span class="icon icon-cross2"></span></button>
+                </div>
+            </div>
+            <div class="drip__body">
+                <h6 class="drip__title">Drip Title</h6>
+                <p class="drip__message">Drip Message</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

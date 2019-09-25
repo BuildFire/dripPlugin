@@ -270,7 +270,8 @@
             div.getElementsByClassName('dripDelete')[0].onclick = function () {
                 buildfire.notifications.confirm({
                     title: 'Delete Drip Notification',
-                    message: 'Are you sure you want to delete this drip notification?'
+                    message: 'Are you sure you want to delete this drip notification?',
+                    confirmButton: {type: 'danger', text: 'Delete'}
                 }, function (err, result) {
                     if (result && result.selectedButton && result.selectedButton.key == 'confirm') {
                         data.drips.splice(current_index, 1);

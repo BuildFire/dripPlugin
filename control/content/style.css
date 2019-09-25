@@ -304,3 +304,8 @@ textarea.form-control {
     font-size: 0.7em;
     opacity: 0.75;
 }
+#loading {
+    text-align: center;
+    font-size: 0.7em;
+    opacity: 0.75;
+}

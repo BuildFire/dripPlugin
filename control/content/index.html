@@ -9,285 +9,309 @@
     <script src="../../../../scripts/buildfire.min.js"></script>
 </head>
 <body>
-    <div class="content-section-title">
-        <span class="top-line"></span>
-        <h5>Create Drip Notification</h5>
-    </div>
-    <p class="info__note">Drips will be sent as notifications if the app is not opened after the set amount of days.</p>
+<div class="content-section-title">
+    <span class="top-line"></span>
+    <h5>Create Drip Notification</h5>
+</div>
+<p class="info__note">Drips will be sent as notifications if the app is not opened after the set amount of days.</p>
 
-    <button class="btn btn-success btn--lg" onclick="window.drip.add(); return false;">Add Drip Notification</button>
+<button id="btnAddDripForm" class="btn btn-success btn--lg" onclick="window.drip.showAddForm(); return false;">Add Drip
+    Notification
+</button>
 
-    <div id="error" class="alert alert-danger hidden">
-        Please fill in all the fields.
-    </div>
+<div id="error" class="alert alert-danger hidden">
+    Please fill in all the fields.
+</div>
 
-    <section>
-        <div class="item clearfix row">
-            <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Title* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top"> <span class="tooltip-container">
+<section id="addForm" class="hidden">
+    <div class="item clearfix row">
+        <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>Title* <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                                   tooltip-placement="top"> <span class="tooltip-container">
                     20 characters max
                 </span></span></span>
-            </div>
-            <div class="main pull-left col-xs-10">
-                <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title" maxlength="20" ></span>
-            </div>
         </div>
-        <div class="item clearfix row">
-            <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Message* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top"> <span class="tooltip-container">
+        <div class="main pull-left col-xs-10">
+            <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title" maxlength="20"></span>
+        </div>
+    </div>
+    <div class="item clearfix row">
+        <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>Message* <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                                     tooltip-placement="top"> <span class="tooltip-container">
                     70 characters max
                 </span></span></span>
-            </div>
-            <div class="main pull-left col-xs-10">
-                <textarea id="txtText" rows="2" class="form-control" placeholder="Enter Message" maxlength="70"></textarea>
-            </div>
         </div>
-        <div class="item clearfix row">
-            <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top"> <span class="tooltip-container">
+        <div class="main pull-left col-xs-10">
+            <textarea id="txtText" rows="2" class="form-control" placeholder="Enter Message" maxlength="70"></textarea>
+        </div>
+    </div>
+    <div class="item clearfix row">
+        <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                                  tooltip-placement="top"> <span class="tooltip-container">
                     Occurs when a user doesn't return to the app in the specified amount of days.
                 </span></span></span>
-            </div>
-            <div class="main pull-left col-xs-10">
-                <input class="form-control drip-day-input" id="txtDays" type="number" value="1" min="1" max="60">
-            </div>
         </div>
-        <div class="bottom__actions">
-            <button class="btn btn--ghost">Cancel</button>
-            <!-- Change between save/add, depending on edit or create drip -->
-            <!-- <button class="btn btn-primary btn--lg">Save</button> -->
-            <button class="btn btn-success btn--lg" onclick="window.drip.add(); return false;">Add</button>
+        <div class="main pull-left col-xs-10">
+            <input class="form-control drip-day-input" id="txtDays" type="number" value="1" min="1" max="60">
         </div>
-    </section>
+    </div>
+    <div class="bottom__actions">
+        <button class="btn btn--ghost" onclick="window.drip.hideAddForm();return false;">Cancel</button>
+        <!-- Change between save/add, depending on edit or create drip -->
+        <!-- <button class="btn btn-primary btn--lg">Save</button> -->
+        <button id="btnSave" class="btn btn-success btn--lg" onclick="window.drip.add(); return false;">Add</button>
+    </div>
+</section>
 
-
+<div id="contentDripsList">
     <div class="content-section-title">
         <span class="top-line"></span>
         <h5>Current Drip Notifications</h5>
     </div>
 
-    <div id="nodrips" className="hidden">
+    <div id="nodrips" class="hidden">
         <p class="empty">There are no scheduled drips</p>
     </div>
 
-
-    <!-- <div id="drips" class="content"></div> -->
-
-    <div class="drips">
-        <div class="drip">
-            <div class="drip__header">
-                <p class="text--secondary"><span class="icon icon-clock"></span> 1 day after app was last oppened</p>
-                <div class="drip__header__actions">
-                    <button class="btn btn--icon"><span class="icon icon-chart-growth"></span></button>
-                    <button class="btn btn--icon"><span class="icon icon-pencil3"></span></button>
-                    <button class="btn btn--icon"><span class="icon icon-cross2"></span></button>
-                </div>
-            </div>
-            <div class="drip__body">
-                <h6 class="drip__title">Drip Title</h6>
-                <p class="drip__message">Drip Message</p>
-            </div>
-        </div>
-        <div class="drip">
-            <div class="drip__header">
-                <p class="text--secondary"><span class="icon icon-clock"></span> 1 day after app was last oppened</p>
-                <div class="drip__header__actions">
-                    <button class="btn btn--icon"><span class="icon icon-chart-growth"></span></button>
-                    <button class="btn btn--icon"><span class="icon icon-pencil3"></span></button>
-                    <button class="btn btn--icon"><span class="icon icon-cross2"></span></button>
-                </div>
-            </div>
-            <div class="drip__body">
-                <h6 class="drip__title">Drip Title</h6>
-                <p class="drip__message">Drip Message</p>
-            </div>
-        </div>
+    <div id="loading">
+        <p class="empty">Loading ...</p>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Delete Drip Notification</h4>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to delete this drip notification?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button id="confirmDelete" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
-          </div>
-        </div>
-      </div>
+    <div id="drips" class="drips hidden">
+
     </div>
+</div>
 
-    <script>
-        var data={
-            drips:[]
-        };
+<script>
+    var data = {
+        drips: []
+    };
 
-        window.drip = {};
+    var current_drip = null;
+    var current_drip_index = null;
 
-        var deleteBtn = document.getElementById('confirmDelete');
-        deleteBtn.onclick = function(e) {
-          confirmDeleteDrip();
-        };
+    window.drip = {};
 
-        function htmlEntities(str) {
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    function htmlEntities(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    window.drip.showAddForm = function (drip, index) {
+        current_drip = drip;
+        if (current_drip)
+            current_drip_index = index;
+        else
+            current_drip_index = null;
+        document.getElementById("txtTitle").value = drip ? drip.title : '';
+        document.getElementById("txtText").value = drip ? drip.text : '';
+        document.getElementById("txtDays").value = drip ? drip.days : '1';
+        document.getElementById("btnSave").innerText = drip ? 'Save' : 'Add';
+
+        var addForm = document.getElementById('addForm');
+        addForm.classList.remove('hidden');
+
+        var contentDripsList = document.getElementById('contentDripsList');
+        contentDripsList.classList.add('hidden');
+
+        var btnAddDripForm = document.getElementById('btnAddDripForm');
+        btnAddDripForm.classList.add('hidden');
+
+        var error = document.getElementById('error');
+        error.classList.add('hidden');
+    };
+
+    window.drip.hideAddForm = function () {
+        var addForm = document.getElementById('addForm');
+        addForm.classList.add('hidden');
+
+        var contentDripsList = document.getElementById('contentDripsList');
+        contentDripsList.classList.remove('hidden');
+
+        var error = document.getElementById('error');
+        error.classList.add('hidden');
+
+        var btnAddDripForm = document.getElementById('btnAddDripForm');
+        btnAddDripForm.classList.remove('hidden');
+    };
+
+    window.drip.add = function () {
+        if (!data.drips) data.drips = [];
+        var error = document.getElementById('error');
+
+        var title = document.getElementById('txtTitle').value;
+        var text = document.getElementById("txtText").value;
+        var days = document.getElementById("txtDays").value;
+
+        if (parseInt(days) < 1) {
+            error.className = 'alert alert-danger';
+            error.innerHTML = "Please input a valid number of days";
+            return;
         }
 
-        window.drip.add = function (){
-            if(!data.drips)data.drips=[];
-            var error = document.getElementById('error');
+        if (parseInt(days) > 60) {
+            error.className = 'alert alert-danger';
+            error.innerHTML = "The maximum number of days can be 60.";
+            return;
+        }
 
-            var title = document.getElementById('txtTitle').value;
-            var text = document.getElementById("txtText").value;
-            var days = document.getElementById("txtDays").value;
+        if (!title || !title.length || !text || !text.length || !parseInt(days)) {
+            error.className = 'alert alert-danger';
+            error.innerHTML = "Please fill in all the fields.";
+            return;
+        }
 
-            if (parseInt(days) < 1) {
-                error.className = 'alert alert-danger';
-                error.innerHTML = "Please input a valid number of days";
-                return;
-            }
-
-            if (parseInt(days) > 60) {
-                error.className = 'alert alert-danger';
-                error.innerHTML = "The maximum number of days can be 60.";
-                return;
-            }
-
-            if (!title || !title.length || !text || !text.length || !parseInt(days)){
-                error.className = 'alert alert-danger';
-                error.innerHTML = "Please fill in all the fields.";
-                return;
-            }
-
-            var repeatedDrip = false;
-            data.drips.forEach(function(drip) {
+        var repeatedDrip = false;
+        var index = 0;
+        data.drips.forEach(function (drip) {
+            if (!current_drip || current_drip_index != index) {
                 if (drip.days === parseInt(days)) {
                     error.className = 'alert alert-danger';
                     error.innerHTML = "You already have a drip assigned for that day.";
                     repeatedDrip = true;
                     return;
                 }
-            });
-
-            if (!repeatedDrip) {
-                error.className = 'hidden';
-            } else {
-                return;
             }
-
-            data.drips.push({
-                title : htmlEntities(title),
-                text : htmlEntities(text),
-                days : parseInt(document.getElementById("txtDays").value),
-                createdOn: new Date()
-            });
-
-            buildfire.datastore.save(data,function(e){
-                if(e)
-                    console.error(e);
-                else{
-                    loadTable(data.drips);
-                    document.getElementById("txtTitle").value = '';
-                    document.getElementById("txtText").value = '';
-                    document.getElementById("txtDays").value = '1';
-                    var days = document.getElementById("txtDays").value;
-
-                }
-            });
-        };
-
-        function loadTable(drips){
-            var dripsContainer = document.getElementById("drips");
-            dripsContainer.className = 'drips-container';
-
-            var noDrips = document.getElementById('nodrips');
-            if (drips.length) {
-                noDrips.className = 'hidden';
-            } else {
-                noDrips.className = '';
-            }
-
-            dripsContainer.innerHTML = '';
-            if (!drips || !drips.length) return;
-            for (var i = 0 ; i < drips.length ; i++) {
-                var div = document.createElement('div');
-                div.className = 'drip';
-
-                var span = document.createElement('span');
-                span.innerHTML = drips[i].days + (drips[i].days === 1 ? " Day" : " Days");
-                span.className = 'days';
-                div.appendChild(span);
-
-                var h1 = document.createElement('h1');
-                h1.innerHTML=drips[i].title;
-                h1.className = 'title';
-                div.appendChild(h1);
-
-                var p = document.createElement('p');
-                p.innerHTML=drips[i].text;
-                p.className = 'text';
-                div.appendChild(p);
-
-                span = document.createElement('span');
-                span.innerHTML = "<a class=\"icon icon-cross2 delete-icon\" title=\"Delete\"></a>";
-                span.setAttribute('data-target', '#myModal');
-                span.setAttribute('data-toggle', 'modal');
-                span.onclick = createDeleteHandler(div, i);
-                span.className = 'delete';
-                div.appendChild(span);
-
-                span = document.createElement('span');
-                span.className = 'tail';
-                div.appendChild(span);
-
-                dripsContainer.appendChild(div);
-            }
-
-        }
-
-        function createDeleteHandler(drip,i){
-            return function() {
-                window.dripToDelete = i;
-                window.dripToDeleteElem = drip;
-
-                var rect = drip.getBoundingClientRect();
-
-                var modal = document.getElementById('myModal');
-                modal.style.top = rect.top - 50 + 'px';
-            };
-        }
-
-        function confirmDeleteDrip() {
-            data.drips.splice(window.dripToDelete, 1);
-
-            var drips = document.getElementById("drips");
-            drips.removeChild(window.dripToDeleteElem);
-            buildfire.datastore.save(data,function(e){
-                if(e) console.error(e);
-                loadTable(data.drips);
-            })
-        }
-
-        buildfire.datastore.get(function(err,result){
-           if(err)
-               console.error(err);
-           else{
-               data = result.data;
-               loadTable(data.drips);
-           }
+            index++;
         });
 
-    </script>
-    <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        if (!repeatedDrip) {
+            error.className = 'hidden';
+        } else {
+            return;
+        }
+
+        if (!current_drip) {
+            data.drips.push({
+                title: htmlEntities(title),
+                text: htmlEntities(text),
+                days: parseInt(document.getElementById("txtDays").value),
+                createdOn: new Date()
+            });
+        } else {
+            current_drip.title = htmlEntities(title);
+            current_drip.text = htmlEntities(text);
+            current_drip.days = parseInt(document.getElementById("txtDays").value);
+            current_drip.lastUpdatedOn = new Date();
+        }
+
+        buildfire.datastore.save(data, function (e) {
+            if (e)
+                console.error(e);
+            else {
+                loadTable(data.drips);
+                document.getElementById("txtTitle").value = '';
+                document.getElementById("txtText").value = '';
+                document.getElementById("txtDays").value = '1';
+                var days = document.getElementById("txtDays").value;
+
+                window.drip.hideAddForm();
+            }
+        });
+    };
+
+    function getAnalyticsEventKey(drip) {
+        return 'drip_date_' + Number(drip.createdOn);
+    }
+
+    function loadTable(drips) {
+        var dripsContainer = document.getElementById("drips");
+        dripsContainer.className = 'drips-container';
+
+        var loading = document.getElementById('loading');
+        loading.classList.add('hidden');
+
+        var noDrips = document.getElementById('nodrips');
+        if (drips.length > 0) {
+            noDrips.classList.add('hidden');
+        } else {
+            noDrips.classList.remove('hidden');
+        }
+
+        dripsContainer.innerHTML = '';
+        if (!drips || !drips.length) return;
+        var index = 0;
+        drips.forEach(function (d) {
+            //make sure the event is registered
+            /*buildfire.analytics.registerEvent({
+                title: d.title,
+                key: getAnalyticsEventKey(d),
+                description: d.text
+            }, {silentNotification: true}, function (err, result) {
+
+            });*/
+
+            var div = document.createElement('div');
+            div.className = 'drip';
+
+            div.innerHTML = '<div class="drip">\n' +
+                '            <div class="drip__header">\n' +
+                '                <p class="text--secondary"><span class="icon icon-clock"></span>' + d.days + (d.days === 1 ? " Day" : " Days") + ' after app was last oppened</p>\n' +
+                '                <div class="drip__header__actions">\n' +
+                '                    <button class="dripAnalytics hidden btn btn--icon"><span class="icon icon-chart-growth"></span></button>\n' +
+                '                    <button class="dripEdit btn btn--icon"><span class="icon icon-pencil3"></span></button>\n' +
+                '                    <button class="dripDelete btn btn--icon"><span class="icon icon-cross2"></span></button>\n' +
+                '                </div>\n' +
+                '            </div>\n' +
+                '            <div class="drip__body">\n' +
+                '                <h6 class="drip__title">' + d.title + '</h6>\n' +
+                '                <p class="drip__message">' + d.text + '</p>\n' +
+                '            </div>\n' +
+                '        </div>';
+
+            var current_index = index;
+            div.getElementsByClassName('dripAnalytics')[0].onclick = function () {
+                buildfire.analytics.showReports({eventKey: getAnalyticsEventKey(d)});
+            };
+            div.getElementsByClassName('dripEdit')[0].onclick = function () {
+                window.drip.showAddForm(d, current_index);
+            };
+            div.getElementsByClassName('dripDelete')[0].onclick = function () {
+                buildfire.notifications.confirm({
+                    title: 'Delete Drip Notification',
+                    message: 'Are you sure you want to delete this drip notification?'
+                }, function (err, result) {
+                    if (result && result.selectedButton && result.selectedButton.key == 'confirm') {
+                        data.drips.splice(current_index, 1);
+                        buildfire.analytics.unregisterEvent(getAnalyticsEventKey(d), function (err, result) {
+                        });
+                        buildfire.datastore.save(data, function (e) {
+                            if (e)
+                                console.error(e);
+                            else {
+                                loadTable(data.drips);
+                            }
+                        });
+                    }
+                });
+            };
+
+            dripsContainer.appendChild(div);
+            index++;
+        });
+    }
+
+    buildfire.datastore.get(function (err, result) {
+        if (err)
+            console.error(err);
+        else {
+            data = result.data;
+            if (!data)
+                data = {};
+            if (!data.drips)
+                data.drips = [];
+            loadTable(data.drips);
+        }
+    });
+
+</script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>

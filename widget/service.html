@@ -4,14 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="buildfire" content="disableTheme,disableFastClick">
 
-	<script src="../../../scripts/buildfire.min.js"></script>
+    <script src="../../../scripts/buildfire.min.js"></script>
     <script src="../../../scripts/buildfire/services/notifications/localNotifications.js"></script>
     <script>
         function cancelAllPreviousDrips() {
             var idString = localStorage.getItem("dripIds");
             if (idString) {
 
-               var ids = idString.split(",");
+                var ids = idString.split(",");
                 localStorage.setItem("dripIds", ids);
                 for (var i = 0; i < ids.length; i++) {
                     buildfire.notifications.localNotification.cancel(ids[i], function (e, data) {
@@ -21,6 +21,7 @@
                 }
             }
         }
+
         cancelAllPreviousDrips();
 
         buildfire.device.onAppResumed(function () {
@@ -30,43 +31,48 @@
             }
         );
 
-        function scheduleDrips(drips){
+        function getAnalyticsEventKey(drip) {
+            return 'drip_date_' + Number(drip.createdOn);
+        }
 
-            if(!drips || !drips.length) return;
+        function scheduleDrips(drips) {
 
-            var ids=[];
+            if (!drips || !drips.length) return;
+
+            var ids = [];
             var now = new Date();
 
-            for(var i = 0 ; i < drips.length ; i++) {
+            for (var i = 0; i < drips.length; i++) {
                 var options = {
                     title: drips[i].title
-                    ,text: drips[i].text
-                    //,data: actionItem
-                    ,at: new Date(now.getTime()  + (1000 * 60 * drips[i].days))
-                    ,returnToPluginInstanceId: 'home' //optional
+                    , text: drips[i].text
+                    , data: drips[i]
+                    , at: new Date(now.getTime() + (1000 * 60 * drips[i].days))
                 };
                 buildfire.notifications.localNotification.schedule(options, function (err, data) {
-                    if(data && data.id){
-			    ids.push(data.id);
-	                    localStorage.setItem("dripIds", ids.join(','));
-		    }
+                    if (data && data.id) {
+                        //buildfire.analytics.trackAction(getAnalyticsEventKey(data.data),[meta data obj]);
+                        ids.push(data.id);
+                        localStorage.setItem("dripIds", ids.join(','));
+                    }
                 });
             }
 
         }
 
         function loadDrips() {
-            buildfire.datastore.get(function(err,result){
-                if(err)
+            buildfire.datastore.get(function (err, result) {
+                if (err)
                     console.error(err);
-                else{
+                else {
 
                     data = result.data;
-                    if(location.protocol.indexOf('http') < 0)
+                    if (location.protocol.indexOf('http') < 0)
                         scheduleDrips(data.drips);
                 }
             });
         }
+
         loadDrips();
     </script>
 </head>

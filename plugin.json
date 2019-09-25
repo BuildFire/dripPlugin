@@ -1,6 +1,6 @@
 {
-  "author": "Alex Cavazos",
-  "pluginName": "Drip Campaign - Alex",
+  "author": "BuildFire",
+  "pluginName": "Drip Notification",
   "pluginDescription": "This allows you to schedule drip notification to bring your users back into the app",
   "supportEmail": "devSupport@buildfire.com",
   "singleton": true,
@@ -20,7 +20,11 @@
     "enabled": false
   },
   "features": [
-    { "name": "localNotification" }
+    {
+      "name": "localNotification"
+    }
   ],
-  "languages": ["en"]
+  "languages": [
+    "en"
+  ]
 }

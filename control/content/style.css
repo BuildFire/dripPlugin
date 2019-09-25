@@ -88,6 +88,9 @@ section{
     position: relative;
     margin-bottom: .75rem;
 }
+.drip:last-of-type{
+    margin-bottom: 2rem;
+}
 .drip__header{
     display: flex;
     justify-content: space-between;
@@ -154,11 +157,12 @@ section{
 .drip .delete a {
     color: #000;
 }
-.drip .delete:hover {
+.drip .dripDelete,
+.drip .dripDelete span  {
     transition-duration: 200ms;
     -webkit-transition-duration: 200ms;
 }
-.drip .delete:hover a {
+.drip .dripDelete:hover span {
     color: red;
 }
 .alert {

@@ -26,7 +26,7 @@
 <section id="addForm" class="hidden">
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Title* <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                <span>Title<span class="text-danger">*</span> <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
                                    tooltip-placement="top"> <span class="tooltip-container">
                     20 characters max
                 </span></span></span>
@@ -37,7 +37,7 @@
     </div>
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Message* <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                <span>Message<span class="text-danger">*</span> <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
                                      tooltip-placement="top"> <span class="tooltip-container">
                     70 characters max
                 </span></span></span>
@@ -48,7 +48,7 @@
     </div>
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Days* <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                <span>Days<span class="text-danger">*</span> <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
                                   tooltip-placement="top"> <span class="tooltip-container">
                     Occurs when a user doesn't return to the app in the specified amount of days.
                 </span></span></span>
@@ -58,10 +58,8 @@
         </div>
     </div>
     <div class="bottom__actions">
-        <button class="btn btn--ghost" onclick="window.drip.hideAddForm();return false;">Cancel</button>
-        <!-- Change between save/add, depending on edit or create drip -->
-        <!-- <button class="btn btn-primary btn--lg">Save</button> -->
-        <button id="btnSave" class="btn btn-success btn--lg" onclick="window.drip.add(); return false;">Add</button>
+        <button class="btn text-danger" onclick="window.drip.hideAddForm();return false;">Cancel</button>
+        <div id="btnSave" onclick="window.drip.add(); return false;">Add</div>
     </div>
 </section>
 
@@ -107,7 +105,7 @@
         document.getElementById("txtTitle").value = drip ? drip.title : '';
         document.getElementById("txtText").value = drip ? drip.text : '';
         document.getElementById("txtDays").value = drip ? drip.days : '1';
-        document.getElementById("btnSave").innerText = drip ? 'Save' : 'Add';
+        document.getElementById("btnSave").innerHTML = drip ? '<button class="btn btn-primary btn--lg">Save</button>' : '<button class="btn btn-success btn--lg">Add</button>';
 
         var addForm = document.getElementById('addForm');
         addForm.classList.remove('hidden');
@@ -245,7 +243,7 @@
             var div = document.createElement('div');
             div.className = 'drip';
 
-            div.innerHTML = '<div class="drip">\n' +
+            div.innerHTML = '<div>\n' +
                 '            <div class="drip__header">\n' +
                 '                <p class="text--secondary"><span class="icon icon-clock"></span>' + d.days + (d.days === 1 ? " Day" : " Days") + ' after app was last oppened</p>\n' +
                 '                <div class="drip__header__actions">\n' +

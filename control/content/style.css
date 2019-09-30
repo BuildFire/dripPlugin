@@ -78,6 +78,12 @@ p.empty{
 .bottom__actions .btn{
     margin-left: .5rem;
 }
+.btn-info-icon::after{
+    font-style: normal;
+    font-weight: bold;
+    top: -1px !important; 
+    left: 0;
+}
 section{
     margin: 1rem 0;
 }

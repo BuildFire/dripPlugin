@@ -11,7 +11,7 @@
 <body>
 <div class="content-section-title">
     <span class="top-line"></span>
-    <h5>Create Drip Notification</h5>
+    <h5 id="titleDripNotification">Create Drip Notification</h5>
 </div>
 <p class="info__note">Drips will be sent as notifications if the app is not opened after the set amount of days.</p>
 
@@ -26,8 +26,9 @@
 <section id="addForm" class="hidden">
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Title<span class="text-danger">*</span> <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                                   tooltip-placement="top"> <span class="tooltip-container">
+                <span>Title<span class="text-danger">*</span> <span
+                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                        tooltip-placement="top"> <span class="tooltip-container">
                     20 characters max
                 </span></span></span>
         </div>
@@ -37,8 +38,9 @@
     </div>
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Message<span class="text-danger">*</span> <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                                     tooltip-placement="top"> <span class="tooltip-container">
+                <span>Message<span class="text-danger">*</span> <span
+                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                        tooltip-placement="top"> <span class="tooltip-container">
                     70 characters max
                 </span></span></span>
         </div>
@@ -48,8 +50,9 @@
     </div>
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Days<span class="text-danger">*</span> <span class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                                  tooltip-placement="top"> <span class="tooltip-container">
+                <span>Days<span class="text-danger">*</span> <span
+                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                        tooltip-placement="top"> <span class="tooltip-container">
                     Occurs when a user doesn't return to the app in the specified amount of days.
                 </span></span></span>
         </div>
@@ -106,6 +109,7 @@
         document.getElementById("txtText").value = drip ? drip.text : '';
         document.getElementById("txtDays").value = drip ? drip.days : '1';
         document.getElementById("btnSave").innerHTML = drip ? '<button class="btn btn-primary btn--lg">Save</button>' : '<button class="btn btn-success btn--lg">Add</button>';
+        document.getElementById('titleDripNotification').innerHTML = drip ? 'Edit Drip Notification' : 'Create Drip Notification';
 
         var addForm = document.getElementById('addForm');
         addForm.classList.remove('hidden');
@@ -121,6 +125,8 @@
     };
 
     window.drip.hideAddForm = function () {
+        document.getElementById('titleDripNotification').innerHTML = 'Create Drip Notification';
+
         var addForm = document.getElementById('addForm');
         addForm.classList.add('hidden');
 

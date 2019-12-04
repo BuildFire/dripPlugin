@@ -9,7 +9,8 @@ html {
 h1, h2, h3, h4, h5, h6{
     font-weight: bold !important;
 }
-p.info__note{
+p.info__note,
+div.info__note {
     background-color: #ececec;
     line-height: 1.33;
     color: #808080;
@@ -69,6 +70,7 @@ p.info__note{
 }
 p.empty{
     font-size: 1rem;
+    margin: 0
 }
 .bottom__actions{
     display: flex;
@@ -102,6 +104,9 @@ section{
     justify-content: space-between;
     align-items: center;
     padding: .75rem .75rem .75rem 1rem;
+}
+.drip__header__actions{
+    display: flex;
 }
 .drip__header p{
     margin: 0;
@@ -312,10 +317,26 @@ textarea.form-control {
 #nodrips {
     text-align: center;
     font-size: 0.7em;
-    opacity: 0.75;
+    height: 15em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #loading {
     text-align: center;
     font-size: 0.7em;
     opacity: 0.75;
+}
+.error-msg {
+    display: flex !important;
+    align-items: center;
+    margin-top: 4px;
+    padding-bottom: 1em;
+    opacity: 0;
+}
+.error-msg p {
+    margin: 0 0 0 .5rem;
+}
+.error-msg.show {
+    opacity: 1 !important;
 }

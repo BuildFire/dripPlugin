@@ -2,11 +2,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../../styles/helper.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="../assets/icomoon/pluginIcons.css">
-
     <script src="../../../../scripts/buildfire.min.js"></script>
+
+    <link rel="stylesheet" href="../../../../styles/helper.css">
+    <link rel="stylesheet" href="../assets/icomoon/pluginIcons.css">
+    <!-- build:bundleCSSFiles  -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- endbuild -->
 </head>
 <body>
 <div class="content-section-title">
@@ -19,35 +21,48 @@
     Notification
 </button>
 
-<div id="error" class="alert alert-danger hidden">
+<!-- <div id="error" class="alert alert-danger hidden">
     Please fill in all the fields.
-</div>
+</div> -->
 
 <section id="addForm" class="hidden">
+
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Title<span class="text-danger">*</span> <span
-                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                        tooltip-placement="top"> <span class="tooltip-container">
-                    20 characters max
-                </span></span></span>
+            <span>Title<span class="text-danger">*</span>
+                <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">
+                    <span class="tooltip-container">20 characters max</span>
+                </span>
+            </span>
         </div>
         <div class="main pull-left col-xs-10">
-            <input id="txtTitle" type="text" class="form-control" placeholder="Enter Title" maxlength="20"></span>
+            <input id="txtTitle" type="text" class="form-control pn-input" placeholder="Enter Title" maxlength="20"></span>
+            <div id="title-error" class="error-msg">
+                <span class="tip btn-info-icon btn-danger transition-third"></span>
+                <p class="text-danger">This Field is Required</p>
+            </div>
         </div>
     </div>
+
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Message<span class="text-danger">*</span> <span
-                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                        tooltip-placement="top"> <span class="tooltip-container">
-                    70 characters max
-                </span></span></span>
+            <span>Message<span class="text-danger">*</span>
+                <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">
+                    <span class="tooltip-container">
+                        70 characters max
+                    </span>
+                </span>
+            </span>
         </div>
         <div class="main pull-left col-xs-10">
-            <textarea id="txtText" rows="2" class="form-control" placeholder="Enter Message" maxlength="70"></textarea>
+            <textarea id="txtText" rows="2" class="form-control pn-input" placeholder="Enter Message" maxlength="70"></textarea>
+            <div id="msg-error" class="error-msg">
+                <span class="tip btn-info-icon btn-danger transition-third"></span>
+                <p class="text-danger">This Field is Required</p>
+            </div>
         </div>
     </div>
+
     <div class="item clearfix row">
         <div class="labels pull-left col-xs-2 tooltip-holder">
                 <span>Days<span class="text-danger">*</span> <span
@@ -57,8 +72,13 @@
                 </span></span></span>
         </div>
         <div class="main pull-left col-xs-10">
-            <input class="form-control drip-day-input" id="txtDays" type="number" value="1" min="1" max="60">
+            <input class="form-control drip-day-input pn-input" id="txtDays" type="number" value="1" min="1" max="60">
+            <div id="days-error" class="error-msg">
+                <span class="tip btn-info-icon btn-danger transition-third"></span>
+                <p class="text-danger">Please input a valid number of days</p>
+            </div>
         </div>
+
     </div>
     <div class="bottom__actions">
         <button class="btn text-danger" onclick="window.drip.hideAddForm();return false;">Cancel</button>
@@ -72,8 +92,8 @@
         <h5>Current Drip Notifications</h5>
     </div>
 
-    <div id="nodrips" class="hidden">
-        <p class="empty">There are no scheduled drips</p>
+    <div id="nodrips" class="info__note hidden">
+        <p class="empty">There are no scheduled drip notifications</p>
     </div>
 
     <div id="loading">
@@ -93,6 +113,16 @@
     var current_drip = null;
     var current_drip_index = null;
 
+    var txtTitle = document.getElementById("txtTitle");
+    var txtText = document.getElementById("txtText");
+    var txtDays = document.getElementById("txtDays");
+    var btnSave = document.getElementById("btnSave");
+
+    var titleError = document.getElementById('title-error');
+    var msgError = document.getElementById('msg-error');
+    var daysError = document.getElementById('days-error');
+    var daysErrorMsg = daysError.querySelectorAll('p')[0];
+
     window.drip = {};
 
     function htmlEntities(str) {
@@ -105,10 +135,10 @@
             current_drip_index = index;
         else
             current_drip_index = null;
-        document.getElementById("txtTitle").value = drip ? drip.title : '';
-        document.getElementById("txtText").value = drip ? drip.text : '';
-        document.getElementById("txtDays").value = drip ? drip.days : '1';
-        document.getElementById("btnSave").innerHTML = drip ? '<button class="btn btn-primary btn--lg">Save</button>' : '<button class="btn btn-success btn--lg">Add</button>';
+        txtTitle.value = drip ? drip.title : '';
+        txtText.value = drip ? drip.text : '';
+        txtDays.value = drip ? drip.days : '1';
+        btnSave.innerHTML = drip ? '<button class="btn btn-primary btn--lg">Save</button>' : '<button class="btn btn-success btn--lg">Add</button>';
         document.getElementById('titleDripNotification').innerHTML = drip ? 'Edit Drip Notification' : 'Create Drip Notification';
 
         var addForm = document.getElementById('addForm');
@@ -120,8 +150,7 @@
         var btnAddDripForm = document.getElementById('btnAddDripForm');
         btnAddDripForm.classList.add('hidden');
 
-        var error = document.getElementById('error');
-        error.classList.add('hidden');
+        clearErrors();
     };
 
     window.drip.hideAddForm = function () {
@@ -133,8 +162,7 @@
         var contentDripsList = document.getElementById('contentDripsList');
         contentDripsList.classList.remove('hidden');
 
-        var error = document.getElementById('error');
-        error.classList.add('hidden');
+        clearErrors();
 
         var btnAddDripForm = document.getElementById('btnAddDripForm');
         btnAddDripForm.classList.remove('hidden');
@@ -142,61 +170,62 @@
 
     window.drip.add = function () {
         if (!data.drips) data.drips = [];
-        var error = document.getElementById('error');
 
-        var title = document.getElementById('txtTitle').value;
-        var text = document.getElementById("txtText").value;
-        var days = document.getElementById("txtDays").value;
+        var title = txtTitle.value;
+        var text = txtText.value;
+        var days = txtDays.value;
+
+        var hasError = false;
+
+        clearErrors();
 
         if (parseInt(days) < 1) {
-            error.className = 'alert alert-danger';
-            error.innerHTML = "Please input a valid number of days";
-            return;
+            setError('days', 'Please input a valid number of days');
+            hasError = true;
         }
 
         if (parseInt(days) > 60) {
-            error.className = 'alert alert-danger';
-            error.innerHTML = "The maximum number of days can be 60.";
-            return;
+            setError('days', 'The maximum number of days is 60');
+            hasError = true;
         }
 
-        if (!title || !title.length || !text || !text.length || !parseInt(days)) {
-            error.className = 'alert alert-danger';
-            error.innerHTML = "Please fill in all the fields.";
-            return;
+        if (!title || !title.length) {
+            setError('title');
+            hasError = true;
         }
 
-        var repeatedDrip = false;
+        if (!text || !text.length) {
+            setError('msg');
+            hasError = true;
+        }
+
+        
         var index = 0;
         data.drips.forEach(function (drip) {
             if (!current_drip || current_drip_index != index) {
                 if (drip.days === parseInt(days)) {
-                    error.className = 'alert alert-danger';
-                    error.innerHTML = "You already have a drip assigned for that day.";
-                    repeatedDrip = true;
+                    setError('days', 'You already have a drip assigned for that day');
+                    hasError = true;
                     return;
                 }
             }
             index++;
         });
-
-        if (!repeatedDrip) {
-            error.className = 'hidden';
-        } else {
-            return;
-        }
+        
+        if (hasError) return;
 
         if (!current_drip) {
             data.drips.push({
                 title: htmlEntities(title),
                 text: htmlEntities(text),
-                days: parseInt(document.getElementById("txtDays").value),
-                createdOn: new Date()
+                days: parseInt(txtDays.value),
+                createdOn: new Date(),
+                UUID: getUUID()
             });
         } else {
             current_drip.title = htmlEntities(title);
             current_drip.text = htmlEntities(text);
-            current_drip.days = parseInt(document.getElementById("txtDays").value);
+            current_drip.days = parseInt(txtDays.value);
             current_drip.lastUpdatedOn = new Date();
         }
 
@@ -205,10 +234,10 @@
                 console.error(e);
             else {
                 loadTable(data.drips);
-                document.getElementById("txtTitle").value = '';
-                document.getElementById("txtText").value = '';
-                document.getElementById("txtDays").value = '1';
-                var days = document.getElementById("txtDays").value;
+                txtTitle.value = '';
+                txtText.value = '';
+                txtDays.value = '1';
+                var days = txtDays.value;
 
                 window.drip.hideAddForm();
             }
@@ -216,7 +245,7 @@
     };
 
     function getAnalyticsEventKey(drip) {
-        return 'drip_date_' + Number(drip.createdOn);
+        return 'drip_' + drip.UUID;
     }
 
     function loadTable(drips) {
@@ -238,20 +267,18 @@
         var index = 0;
         drips.forEach(function (d) {
             //make sure the event is registered
-            /*buildfire.analytics.registerEvent({
+            buildfire.analytics.registerEvent({
                 title: d.title,
                 key: getAnalyticsEventKey(d),
-                description: d.text
-            }, {silentNotification: true}, function (err, result) {
-
-            });*/
+                description: 'Drip ' + d.text + ' opened'
+            }, {silentNotification: true}, function () {});
 
             var div = document.createElement('div');
             div.className = 'drip';
 
             div.innerHTML = '<div>\n' +
                 '            <div class="drip__header">\n' +
-                '                <p class="text--secondary"><span class="icon icon-clock"></span>' + d.days + (d.days === 1 ? " Day" : " Days") + ' after app was last oppened</p>\n' +
+                '                <p class="text--secondary"><span class="icon icon-clock"></span>' + d.days + (d.days === 1 ? " Day" : " Days") + ' after app was last opened</p>\n' +
                 '                <div class="drip__header__actions">\n' +
                 '                    <button class="dripAnalytics btn btn--icon"><span class="icon icon-chart-growth"></span></button>\n' +
                 '                    <button class="dripEdit btn btn--icon"><span class="icon icon-pencil3"></span></button>\n' +
@@ -279,8 +306,7 @@
                 }, function (err, result) {
                     if (result && result.selectedButton && result.selectedButton.key == 'confirm') {
                         data.drips.splice(current_index, 1);
-                        buildfire.analytics.unregisterEvent(getAnalyticsEventKey(d), function (err, result) {
-                        });
+                        buildfire.analytics.unregisterEvent(getAnalyticsEventKey(d), function () {});
                         buildfire.datastore.save(data, function (e) {
                             if (e)
                                 console.error(e);
@@ -295,6 +321,54 @@
             dripsContainer.appendChild(div);
             index++;
         });
+    }
+
+    function clearErrors() {
+        var errs = document.getElementsByClassName('error-msg');
+        var inputs = document.querySelectorAll('.pn-input');
+
+        for (let i = 0; i < errs.length; i++) {
+            errs[i].classList.remove('show');
+        }
+
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].classList.remove('border-danger');
+        }
+    }
+
+    function setError(type, message) {
+        var error = null;
+        var input = null;
+        switch (type) {
+            case 'title': {
+                error = titleError;
+                input = txtTitle;
+                break;
+            }
+            case 'msg': {
+                error = msgError;
+                input = txtText;
+                break;
+            }
+            case 'days': {
+                error = daysError;
+                input = txtDays;
+
+                if (message) daysErrorMsg.innerHTML = message;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        error.classList.add('show');
+        input.classList.add('border-danger');
+    }
+
+    function getUUID () {
+        var base = '' + 1e7 + '-' + 1e3 + '-' + 4e3+  '-' + 8e3 + '-' + 1e11 + '' ;
+        // eslint-disable-next-line no-bitwise
+        return base.replace(/[018]/g, c => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
     }
 
     buildfire.datastore.get(function (err, result) {

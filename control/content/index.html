@@ -21,10 +21,6 @@
     Notification
 </button>
 
-<!-- <div id="error" class="alert alert-danger hidden">
-    Please fill in all the fields.
-</div> -->
-
 <section id="addForm" class="hidden">
 
     <div class="item clearfix row">
@@ -80,8 +76,43 @@
         </div>
 
     </div>
+
+        <div class="item row clearfix item--form">
+            <div class="labels pull-left col-xs-2 tooltip-holder">
+                <span>
+                    Action
+                    <span
+                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
+                        tooltip-placement="top">
+                        <span class="tooltip-container">Occurs when a user doesn't return to the app in the specified amount of days.</span>
+                    </span>
+                </span>
+            </div>
+            <div class="col-xs-10">
+                <div id="actionItem" class="margin--bottom">
+                        <button id="actionItem__add" class="btn btn-success">Add Action</button>
+                        <div id="actionItem__card" class="draggable-list-view hidden">
+                            <div class="d-item">
+                                <div class="d-item__text">
+                                    <div id="actionItem__title" class="title ellipsis"></div>
+                                    <div id="actionItem__subtitle" class="subTitle text--secondary ellipsis"></div>
+                                </div>
+                                <div class="d-item__actions">
+                                    <button id="actionItem__edit" class="btn btn--icon edit">
+                                        <span class="icon icon-pencil3"></span>
+                                    </button>
+                                    <button id="actionItem__remove" class="btn btn--icon btn--danger dripDelete">
+                                        <span class="icon icon-cross2"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
     <div class="bottom__actions">
-        <button class="btn text-danger" onclick="window.drip.hideAddForm();return false;">Cancel</button>
+        <button class="btn" onclick="window.drip.hideAddForm();return false;">Cancel</button>
         <div id="btnSave" onclick="window.drip.add(); return false;">Add</div>
     </div>
 </section>
@@ -118,6 +149,14 @@
     var txtDays = document.getElementById("txtDays");
     var btnSave = document.getElementById("btnSave");
 
+    var actionItem = document.getElementById('actionItem');
+    var actionItemCard = document.getElementById('actionItem__card');
+    var actionItemTitle = document.getElementById('actionItem__title');
+    var actionItemSubTitle = document.getElementById('actionItem__subtitle');
+    var addActionItem = document.getElementById('actionItem__add');
+    var editActionItem = document.getElementById('actionItem__edit');
+    var removeActionItem = document.getElementById('actionItem__remove');
+
     var titleError = document.getElementById('title-error');
     var msgError = document.getElementById('msg-error');
     var daysError = document.getElementById('days-error');
@@ -129,19 +168,42 @@
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
+    addActionItem.addEventListener('click', handleActionPrompt);
+    editActionItem.addEventListener('click', handleActionPrompt);
+    removeActionItem.addEventListener('click', () => actions.clear());
+
+    function handleActionPrompt (e) {
+        e.preventDefault();
+
+        const action = actionItem.getAttribute('data-action');
+        const prevAction = (action !== 'undefined' && action !== "") ? tryParseJSON(action) : {};
+
+        buildfire.actionItems.showDialog(prevAction, { showIcon: false }, (err, result) => {
+            if (err) return console.error(err);
+
+            if (result) {
+                actions.set(result);
+            }
+        });
+    };
+
     window.drip.showAddForm = function (drip, index) {
         current_drip = drip;
-        if (current_drip)
+
+        if (current_drip) {
             current_drip_index = index;
-        else
+        } else {
             current_drip_index = null;
+        }
+
         txtTitle.value = drip ? drip.title : '';
         txtText.value = drip ? drip.text : '';
         txtDays.value = drip ? drip.days : '1';
         btnSave.innerHTML = drip ? '<button class="btn btn-primary btn--lg">Save</button>' : '<button class="btn btn-success btn--lg">Add</button>';
         document.getElementById('titleDripNotification').innerHTML = drip ? 'Edit Drip Notification' : 'Create Drip Notification';
 
-        var addForm = document.getElementById('addForm');
+        actions.set(drip ? drip.action : null);
+
         addForm.classList.remove('hidden');
 
         var contentDripsList = document.getElementById('contentDripsList');
@@ -162,6 +224,8 @@
         var contentDripsList = document.getElementById('contentDripsList');
         contentDripsList.classList.remove('hidden');
 
+        actions.clear();
+
         clearErrors();
 
         var btnAddDripForm = document.getElementById('btnAddDripForm');
@@ -174,6 +238,7 @@
         var title = txtTitle.value;
         var text = txtText.value;
         var days = txtDays.value;
+        var action = actions.get();
 
         var hasError = false;
 
@@ -218,6 +283,7 @@
             data.drips.push({
                 title: htmlEntities(title),
                 text: htmlEntities(text),
+                action: action,
                 days: parseInt(txtDays.value),
                 createdOn: new Date(),
                 UUID: getUUID()
@@ -226,6 +292,7 @@
             current_drip.title = htmlEntities(title);
             current_drip.text = htmlEntities(text);
             current_drip.days = parseInt(txtDays.value);
+            current_drip.action = action;
             current_drip.lastUpdatedOn = new Date();
         }
 
@@ -239,9 +306,35 @@
                 txtDays.value = '1';
                 var days = txtDays.value;
 
+                actions.clear();
+
                 window.drip.hideAddForm();
             }
         });
+    };
+
+    var actions = {
+        set: function (action) {
+            if (!action) {
+                actionItem.setAttribute('data-action', '');
+                actionItemTitle.innerHTML = '';
+                actionItemSubTitle.innerHTML = '';
+                actionItemCard.classList.add('hidden');
+                addActionItem.classList.remove('hidden');
+                return;
+            };
+            actionItem.setAttribute('data-action', JSON.stringify(action));
+            actionItemTitle.innerHTML = action.title;
+            actionItemSubTitle.innerHTML = action.action;
+            actionItemCard.classList.remove('hidden');
+            addActionItem.classList.add('hidden');
+        },
+        get: function () {
+            return tryParseJSON(actionItem.getAttribute('data-action'));
+        },
+        clear: function () {
+            actions.set(null);
+        }
     };
 
     function getAnalyticsEventKey(drip) {
@@ -265,6 +358,7 @@
         dripsContainer.innerHTML = '';
         if (!drips || !drips.length) return;
         var index = 0;
+        drips.sort((a, b) => a.days - b.days);
         drips.forEach(function (d) {
             //make sure the event is registered
             buildfire.analytics.registerEvent({
@@ -371,6 +465,16 @@
         return base.replace(/[018]/g, c => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
     }
 
+    function tryParseJSON(str){
+        try {
+            return JSON.parse(str);
+        }
+        catch(e){
+            console.error('Cannot parse data :: ' + str , e.message , e.stack);
+            return undefined;
+        }
+    }
+
     buildfire.datastore.get(function (err, result) {
         if (err)
             console.error(err);
@@ -383,6 +487,12 @@
             loadTable(data.drips);
         }
     });
+
+    buildfire.analytics.registerEvent({
+        title: 'All Drips',
+        key: 'all_drips',
+        description: 'All Drips Opened'
+    }, {silentNotification: true}, function () {});
 
 </script>
 <script

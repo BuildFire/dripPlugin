@@ -28,9 +28,6 @@ div.info__note {
     align-items: center;
     padding: 0 !important;
 }
-.btn--icon.btn--danger:hover{
-    background-color: inherit;
-}
 .btn--icon.btn--danger:hover span.icon{
     color: red;
 }
@@ -339,4 +336,62 @@ textarea.form-control {
 }
 .error-msg.show {
     opacity: 1 !important;
+}
+.draggable-list-view {
+    border: 0 !important;
+    margin: 0 !important;
+}
+.draggable-list-view .d-item {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: .75rem;
+    border-radius: .25rem;
+    padding: .75rem !important;
+    justify-content: space-between;
+    align-items: center;
+}
+.draggable-list-view .d-item p {
+    margin: 0;
+}
+.draggable-list-view .d-item__text {
+    flex: auto;
+    margin-left: 1rem;
+    align-items: center;
+}
+.draggable-list-view .d-item__text .title {
+    width: 70%;
+    color: black;
+    font-weight: bold;
+}
+.draggable-list-view .text--secondary {
+    font-size: .75rem;
+    opacity: .85;
+}
+.draggable-list-view .d-item .subTitle {
+    width: calc(50% - 1rem);
+    flex-shrink: 0;
+}
+.draggable-list-view .d-item:hover {
+    box-shadow: 0 .25rem .25rem -.25rem rgba(0, 0, 0, .2);
+}
+.draggable-list-view .d-item span.icon {
+    top: 0 !important;
+    margin-right: 0px !important;
+}
+.draggable-list-view .d-item .btn--icon .icon {
+    font-size: 1.125rem;
+    color: #000;
+}
+.draggable-list-view .d-item .d-item__title {
+    flex: auto;
+    display: flex;
+}
+.draggable-list-view .d-item .d-item__actions {
+    display: flex;
+    margin-left: 1rem;
+}
+#actionItem__add {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
 }

@@ -1,30 +1,31 @@
 {
-  "author": "BuildFire",
-  "pluginName": "Drip Notification",
-  "pluginDescription": "This allows you to schedule drip notification to bring your users back into the app",
-  "supportEmail": "devSupport@buildfire.com",
-  "singleton": true,
-  "control": {
-    "content": {
-      "enabled": true
-    },
-    "design": {
-      "enabled": false
-    },
-    "settings": {
-      "enabled": false
-    }
-  },
-  "widget": {
-    "service": "service.html",
-    "enabled": false
-  },
-  "features": [
-    {
-      "name": "localNotification"
-    }
-  ],
-  "languages": [
-    "en"
-  ]
+	"author": "BuildFire",
+	"pluginName": "Drip Notification",
+	"pluginDescription": "Take your user engagement to the next level with Drip Notification. This feature provides scheduled drip notifications to draw users back to your app if they have not visited lately. Attach actions to each drip to guide your audience to specific features or functionalities.",
+	"supportEmail": "support@buildfire.com",
+	"singleton": true,
+	"control": {
+		"content": {
+			"enabled": true
+		},
+		"design": {
+			"enabled": false
+		},
+		"settings": {
+			"enabled": false
+		},
+		"removeHeader": true
+	},
+	"widget": {
+		"service": "service.html",
+		"enabled": false
+	},
+	"features": [
+		{
+			"name": "localNotification"
+		}
+	],
+	"languages": ["en"],
+	"media": [{ "type": "image-resource", "path": "drip-notification.gif" }],
+	"pluginKeywords": "push,marketing,engagement"
 }

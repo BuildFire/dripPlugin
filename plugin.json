@@ -27,5 +27,5 @@
 	],
 	"languages": ["en"],
 	"media": [{ "type": "image-resource", "path": "drip-notification.gif" }],
-	"pluginKeywords": "push,marketing,engagement"
+	"pluginKeywords": "alarm,push,marketing,engagement,scheduled,notification"
 }

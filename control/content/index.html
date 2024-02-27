@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../../../../scripts/buildfire.min.js"></script>
 
+    <link rel="stylesheet" href="../../../../styles/control/bf-base.css">
     <link rel="stylesheet" href="../../../../styles/helper.css">
     <link rel="stylesheet" href="../assets/icomoon/pluginIcons.css">
     <!-- build:bundleCSSFiles  -->
@@ -24,27 +25,28 @@
 <section id="addForm" class="hidden">
 
     <div class="item clearfix row">
-        <div class="labels pull-left col-xs-2 tooltip-holder">
-            <span>Title<span class="text-danger">*</span>
-                <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">
-                    <span class="tooltip-container">20 characters max</span>
+        <div class="labels pull-left col-xs-2">
+            <span class="tooltip-container">Title <span class="required"></span>
+                <span class="btn-info-icon btn-primary">
+                    <span class="cp-tooltip">
+                        20 characters max
+                    </span>
                 </span>
             </span>
         </div>
         <div class="main pull-left col-xs-10">
             <input id="txtTitle" type="text" class="form-control pn-input" placeholder="Enter Title" maxlength="20"></span>
             <div id="title-error" class="error-msg">
-                <span class="tip btn-info-icon btn-danger transition-third"></span>
-                <p class="text-danger">This Field is Required</p>
+                <p class="text-danger text-small">This Field is Required</p>
             </div>
         </div>
     </div>
 
     <div class="item clearfix row">
-        <div class="labels pull-left col-xs-2 tooltip-holder">
-            <span>Message<span class="text-danger">*</span>
-                <span class="tip btn-info-icon btn-primary transition-third padding-left-five" tooltip-placement="top">
-                    <span class="tooltip-container">
+        <div class="labels pull-left col-xs-2">
+            <span class="tooltip-container">Message <span class="required"></span>
+                <span class="btn-info-icon btn-primary">
+                    <span class="cp-tooltip">
                         70 characters max
                     </span>
                 </span>
@@ -53,44 +55,43 @@
         <div class="main pull-left col-xs-10">
             <textarea id="txtText" rows="2" class="form-control pn-input" placeholder="Enter Message" maxlength="70"></textarea>
             <div id="msg-error" class="error-msg">
-                <span class="tip btn-info-icon btn-danger transition-third"></span>
-                <p class="text-danger">This Field is Required</p>
+                <p class="text-danger text-small">This Field is Required</p>
             </div>
         </div>
     </div>
 
     <div class="item clearfix row">
-        <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>Days<span class="text-danger">*</span> <span
-                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                        tooltip-placement="top"> <span class="tooltip-container">
-                    Occurs when a user doesn't return to the app in the specified amount of days.
-                </span></span></span>
+        <div class="labels pull-left col-xs-2">
+            <span class="tooltip-container">Days <span class="required"></span>
+                <span class="btn-info-icon btn-primary">
+                    <span class="cp-tooltip">
+                        Occurs when a user doesn't return to the app in the specified amount of days, The maximum duration allowed typically spans 365 days, equating to a full year.
+                    </span>
+                </span>
+            </span>
         </div>
         <div class="main pull-left col-xs-10">
-            <input class="form-control drip-day-input pn-input" id="txtDays" type="number" value="1" min="1" max="60">
+            <input class="form-control drip-day-input pn-input" id="txtDays" type="number" value="1" min="1" max="365">
             <div id="days-error" class="error-msg">
-                <span class="tip btn-info-icon btn-danger transition-third"></span>
-                <p class="text-danger">Please input a valid number of days</p>
+                <p class="text-danger text-small">Please input a valid number of days</p>
             </div>
         </div>
 
     </div>
 
         <div class="item row clearfix item--form">
-            <div class="labels pull-left col-xs-2 tooltip-holder">
-                <span>
-                    Action
-                    <span
-                        class="tip btn-info-icon btn-primary transition-third padding-left-five"
-                        tooltip-placement="top">
-                        <span class="tooltip-container">Occurs when a user doesn't return to the app in the specified amount of days.</span>
+            <div class="labels pull-left col-xs-2">
+                <span class="tooltip-container">Action
+                    <span class="btn-info-icon btn-primary">
+                        <span class="cp-tooltip">
+                            Occurs when a user doesn't return to the app in the specified amount of days.
+                        </span>
                     </span>
                 </span>
             </div>
             <div class="col-xs-10">
                 <div id="actionItem" class="margin--bottom">
-                        <button id="actionItem__add" class="btn btn-success">Add Action</button>
+                        <button id="actionItem__add" class="btn btn-outlined btn-primary btn-add">Add Action</button>
                         <div id="actionItem__card" class="draggable-list-view hidden">
                             <div class="d-item">
                                 <div class="d-item__text">
@@ -111,8 +112,8 @@
             </div>
         </div>
 
-    <div class="bottom__actions">
-        <button class="btn" onclick="window.drip.hideAddForm();return false;">Cancel</button>
+    <div class="bottom-actions">
+        <button class="btn btn-default" onclick="window.drip.hideAddForm();return false;">Cancel</button>
         <div id="btnSave" onclick="window.drip.add(); return false;">Add</div>
     </div>
 </section>
@@ -199,7 +200,7 @@
         txtTitle.value = drip ? drip.title : '';
         txtText.value = drip ? drip.text : '';
         txtDays.value = drip ? drip.days : '1';
-        btnSave.innerHTML = drip ? '<button class="btn btn-primary btn--lg">Save</button>' : '<button class="btn btn-success btn--lg">Add</button>';
+        btnSave.innerHTML = drip ? '<button class="btn btn-primary">Save</button>' : '<button class="btn btn-success">Add</button>';
         document.getElementById('titleDripNotification').innerHTML = drip ? 'Edit Drip Notification' : 'Create Drip Notification';
 
         actions.set(drip ? drip.action : null);
@@ -249,8 +250,8 @@
             hasError = true;
         }
 
-        if (parseInt(days) > 60) {
-            setError('days', 'The maximum number of days is 60');
+        if (parseInt(days) > 365) {
+            setError('days', 'The maximum number of days is 365');
             hasError = true;
         }
 

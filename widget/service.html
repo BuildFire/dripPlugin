@@ -62,6 +62,9 @@
         }
 
         function loadDrips() {
+            buildfire.notifications.localNotification.requestPermission(function (err, data) {
+                if (err) console.error(err);
+            });
             buildfire.datastore.get(function (err, result) {
                 if (err)
                     console.error(err);

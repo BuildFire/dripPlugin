@@ -62,9 +62,6 @@
         }
 
         function loadDrips() {
-            buildfire.notifications.localNotification.requestPermission(function (err, data) {
-                if (err) console.error(err);
-            });
             buildfire.datastore.get(function (err, result) {
                 if (err)
                     console.error(err);
@@ -76,7 +73,10 @@
                 }
             });
         }
-
+        // request permission upon initially and once only
+        buildfire.notifications.localNotification.requestPermission(function (err, data) {
+            if (err) console.error(err);
+        });
         loadDrips();
     </script>
 </head>

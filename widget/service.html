@@ -25,11 +25,20 @@
         cancelAllPreviousDrips();
 
         buildfire.device.onAppResumed(function () {
-                localStorage.applicationResumed = new Date().toISOString();
-                cancelAllPreviousDrips();
-                loadDrips();
-            }
-        );
+          const lastDripLoad = localStorage.getItem('lastDripLoad');
+          const currentTime = new Date();
+          // 5 minutes from now
+          const thresholdTime = new Date(currentTime.getTime() - 5 * 60 * 1000);
+          const lastExecuteDate = new Date(lastDripLoad);
+          // to avoid infinite execution on some devices (onAppResumed gets triggered upon scheduling/canceling a notification)
+          if (lastDripLoad && lastExecuteDate > thresholdTime) {
+            return;
+          }
+
+          localStorage.setItem('lastDripLoad', new Date().toISOString());
+          cancelAllPreviousDrips();
+          loadDrips();
+        });
 
         function getAnalyticsEventKey(drip) {
             return 'drip_' + drip.UUID;
@@ -63,13 +72,13 @@
 
         function loadDrips() {
             buildfire.datastore.get(function (err, result) {
-                if (err)
-                    console.error(err);
-                else {
-
+                if (err) {
+                  console.error(err);
+                } else {
                     data = result.data;
-                    if (location.protocol.indexOf('http') < 0)
-                        scheduleDrips(data.drips);
+                    if (buildfire.getContext().device.platform !== 'web') {
+                      scheduleDrips(data.drips);
+                    }
                 }
             });
         }

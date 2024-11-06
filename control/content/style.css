@@ -9,9 +9,7 @@ html {
 h1, h2, h3, h4, h5, h6{
     font-weight: bold !important;
 }
-span, h1, h2, h3, h4, h5, h6, p, label {
-    font-family: 'Conv_apercu_regular','Helvetica','Sans-Serif','Arial';
-}
+
 p.info__note,
 div.info__note {
     background-color: #ececec;
@@ -23,7 +21,7 @@ div.info__note {
 }
 .btn--icon{
     width: 2.5rem;
-    height: 2.5rem; 
+    height: 2.5rem;
     border-radius: .25rem;
     font-size: 1.125rem;
     display: flex;
@@ -71,7 +69,7 @@ p.empty{
 .btn-info-icon::after{
     font-style: normal;
     font-weight: bold;
-    top: -1px !important; 
+    top: -1px !important;
     left: 0;
 }
 
@@ -207,12 +205,6 @@ section{
     margin-bottom: 25px;
 }
 
-.content-section-title .top-line {
-    float: left;
-    clear: both;
-    border-top: 4px solid #000;
-    width: 57px;
-}
 h5{
     float: left;
     clear: both;
@@ -317,7 +309,6 @@ span {
     z-index: 100;
     font-weight: 400;
     line-height: 18px;
-    font-family: 'Conv_apercu_regular','Helvetica','Sans-Serif','Arial';
     -webkit-text-stroke: 0;
 }
 .top-cp-tooltip {
